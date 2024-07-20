@@ -6,12 +6,30 @@ import router from './router'
 import { useMainStore } from '@/stores/main.js'
 
 import './css/main.css'
+import keycloak from "@/keycloak";
+// keycloak init
 
+// src/main.js
+keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
+  if (!authenticated) {
+    window.location.reload();
+  } else {
+    createApp(App).use(router).use(pinia).mount('#app')
+  }
+
+  // Optional: Add a token refresher
+  setInterval(() => {
+    keycloak.updateToken(70).catch(() => {
+      keycloak.login({redirectUri: '/dashboard'});
+    });
+  }, 60000);
+}).catch(() => {
+  console.error('Failed to initialize Keycloak');
+});
 // Init Pinia
 const pinia = createPinia()
 
 // Create Vue app
-createApp(App).use(router).use(pinia).mount('#app')
 
 // Init main store
 const mainStore = useMainStore(pinia)
@@ -42,3 +60,6 @@ router.afterEach((to) => {
     ? `${to.meta.title} — ${defaultDocumentTitle}`
     : defaultDocumentTitle
 })
+
+
+

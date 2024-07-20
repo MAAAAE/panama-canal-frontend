@@ -1,15 +1,7 @@
 import {
-  mdiAccountCircle,
   mdiMonitor,
   mdiGithub,
-  mdiLock,
-  mdiAlertCircle,
-  mdiSquareEditOutline,
-  mdiTable,
   mdiViewList,
-  mdiTelevisionGuide,
-  mdiResponsive,
-  mdiPalette,
   mdiMenu
 } from '@mdi/js'
 
@@ -26,6 +18,7 @@ export default [
   },
   {
     label: 'API 관리',
+    to: '/api',
     icon: mdiViewList,
     menu: [
       {

@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Style from '@/views/StyleView.vue'
 import Home from '@/views/HomeView.vue'
+import keycloak from "@/keycloak";
 
 const routes = [
   {
@@ -15,7 +16,8 @@ const routes = [
     // Document title tag
     // We combine it with defaultDocumentTitle set in `src/main.js` on router.afterEach hook
     meta: {
-      title: 'Dashboard'
+      title: 'Dashboard',
+      requiresAuth: true
     },
     path: '/dashboard',
     name: 'dashboard',
@@ -84,6 +86,18 @@ const router = createRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
     return savedPosition || { top: 0 }
+  }
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    if (keycloak.authenticated) {
+      next();
+    } else {
+      keycloak.login({ redirectUri: window.location.origin })
+    }
+  } else {
+    next();
   }
 })
 
