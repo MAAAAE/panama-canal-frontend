@@ -10,7 +10,7 @@ import {
   mdiTelevisionGuide,
   mdiResponsive,
   mdiPalette,
-  mdiReact
+  mdiMenu
 } from '@mdi/js'
 
 export default [
@@ -20,54 +20,19 @@ export default [
     label: 'Dashboard'
   },
   {
-    to: '/tables',
-    label: 'Tables',
-    icon: mdiTable
+    to: '/category',
+    label: 'Category 관리',
+    icon: mdiMenu
   },
   {
-    to: '/forms',
-    label: 'Forms',
-    icon: mdiSquareEditOutline
-  },
-  {
-    to: '/ui',
-    label: 'UI',
-    icon: mdiTelevisionGuide
-  },
-  {
-    to: '/responsive',
-    label: 'Responsive',
-    icon: mdiResponsive
-  },
-  {
-    to: '/',
-    label: 'Styles',
-    icon: mdiPalette
-  },
-  {
-    to: '/profile',
-    label: 'Profile',
-    icon: mdiAccountCircle
-  },
-  {
-    to: '/login',
-    label: 'Login',
-    icon: mdiLock
-  },
-  {
-    to: '/error',
-    label: 'Error',
-    icon: mdiAlertCircle
-  },
-  {
-    label: 'Dropdown',
+    label: 'API 관리',
     icon: mdiViewList,
     menu: [
       {
-        label: 'Item One'
+        label: '동적 구현 필요1'
       },
       {
-        label: 'Item Two'
+        label: '동적 구현 필요2'
       }
     ]
   },
@@ -77,10 +42,4 @@ export default [
     icon: mdiGithub,
     target: '_blank'
   },
-  {
-    href: 'https://github.com/justboil/admin-one-react-tailwind',
-    label: 'React version',
-    icon: mdiReact,
-    target: '_blank'
-  }
 ]
