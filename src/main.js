@@ -14,15 +14,22 @@ keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
   if (!authenticated) {
     window.location.reload();
   } else {
+    keycloak.loadUserInfo().then((info) => {
+      mainStore.setUser({ name: info.preferred_username })
+    })
     createApp(App).use(router).use(pinia).mount('#app')
   }
 
   // Optional: Add a token refresher
   setInterval(() => {
+    console.log('refresh..')
     keycloak.updateToken(70).catch(() => {
       keycloak.login({redirectUri: '/'});
     });
-  }, 60000);
+  }, 10000);
+
+
+
 }).catch(() => {
   console.error('Failed to initialize Keycloak');
 });
