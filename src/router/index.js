@@ -65,6 +65,14 @@ const routes = [
   },
   {
     meta: {
+      title: 'Category 관리'
+    },
+    path: '/category',
+    name: 'category',
+    component: () => import('@/views/CategoryView.vue')
+  },
+  {
+    meta: {
       title: 'Error'
     },
     path: '/error',

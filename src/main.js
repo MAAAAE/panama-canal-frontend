@@ -43,6 +43,7 @@ const mainStore = useMainStore(pinia)
 
 // Fetch sample data
 mainStore.fetchSampleClients()
+mainStore.fetchCategories()
 mainStore.fetchSampleHistory()
 
 // Dark mode

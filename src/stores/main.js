@@ -18,6 +18,7 @@ export const useMainStore = defineStore('main', () => {
 
   const clients = ref([])
   const history = ref([])
+  const categories = ref([])
 
   function setUser(payload) {
     if (payload.name) {
@@ -33,6 +34,16 @@ export const useMainStore = defineStore('main', () => {
       .get(`data-sources/clients.json?v=3`)
       .then((result) => {
         clients.value = result?.data?.data
+      })
+      .catch((error) => {
+        alert(error.message)
+      })
+  }
+  function fetchCategories() {
+    axios
+      .get(`data-sources/categories.json?v=3`)
+      .then((result) => {
+        categories.value = result?.data?.data
       })
       .catch((error) => {
         alert(error.message)
@@ -57,8 +68,10 @@ export const useMainStore = defineStore('main', () => {
     isFieldFocusRegistered,
     clients,
     history,
+    categories,
     setUser,
     fetchSampleClients,
-    fetchSampleHistory
+    fetchSampleHistory,
+    fetchCategories
   }
 })
