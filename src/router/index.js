@@ -1,17 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Style from '@/views/StyleView.vue'
 import Home from '@/views/HomeView.vue'
 import keycloak from "@/keycloak";
+import { useMainStore } from '@/stores/main'
 
 const routes = [
-  {
-    meta: {
-      title: 'Select style'
-    },
-    path: '/',
-    name: 'style',
-    component: Style
-  },
   {
     // Document title tag
     // We combine it with defaultDocumentTitle set in `src/main.js` on router.afterEach hook
@@ -19,9 +11,9 @@ const routes = [
       title: 'Dashboard',
       requiresAuth: true
     },
-    path: '/dashboard',
+    path: '/',
     name: 'dashboard',
-    component: Home
+    component: Home,
   },
   {
     meta: {
@@ -90,15 +82,15 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth) {
-    if (keycloak.authenticated) {
-      next();
-    } else {
-      keycloak.login({ redirectUri: window.location.origin })
-    }
+  if (keycloak.authenticated) {
+      next(removeQueryParams(to));
   } else {
-    next();
+    keycloak.login({redirectUri: window.location.origin})
   }
 })
+function removeQueryParams(to) {
+  if (to.path.includes("&state"))
+    return { path: to.path.substring(0, to.path.indexOf("&state")) , query: {}, hash: to.hash }
+}
 
 export default router
