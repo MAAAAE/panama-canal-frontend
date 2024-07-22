@@ -20,7 +20,7 @@ keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
   // Optional: Add a token refresher
   setInterval(() => {
     keycloak.updateToken(70).catch(() => {
-      keycloak.login({redirectUri: '/dashboard'});
+      keycloak.login({redirectUri: '/'});
     });
   }, 60000);
 }).catch(() => {
@@ -52,7 +52,7 @@ mainStore.fetchSampleHistory()
 // }
 
 // Default title tag
-const defaultDocumentTitle = 'Admin One Vue 3 Tailwind'
+const defaultDocumentTitle = '중앙 API 프록시 서비스'
 
 // Set document title from route meta
 router.afterEach((to) => {
