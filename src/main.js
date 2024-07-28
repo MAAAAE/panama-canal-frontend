@@ -6,18 +6,44 @@ import router from './router'
 import { useMainStore } from '@/stores/main.js'
 
 import './css/main.css'
+import keycloak from "@/keycloak";
+// keycloak init
 
+// src/main.js
+keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
+  if (!authenticated) {
+    window.location.reload();
+  } else {
+    keycloak.loadUserInfo().then((info) => {
+      mainStore.setUser({ name: info.preferred_username })
+    })
+    createApp(App).use(router).use(pinia).mount('#app')
+  }
+
+  // Optional: Add a token refresher
+  setInterval(() => {
+    console.log('refresh..')
+    keycloak.updateToken(70).catch(() => {
+      keycloak.login({redirectUri: '/'});
+    });
+  }, 10000);
+
+
+
+}).catch(() => {
+  console.error('Failed to initialize Keycloak');
+});
 // Init Pinia
 const pinia = createPinia()
 
 // Create Vue app
-createApp(App).use(router).use(pinia).mount('#app')
 
 // Init main store
 const mainStore = useMainStore(pinia)
 
 // Fetch sample data
 mainStore.fetchSampleClients()
+mainStore.fetchCategories()
 mainStore.fetchSampleHistory()
 
 // Dark mode
@@ -34,7 +60,7 @@ mainStore.fetchSampleHistory()
 // }
 
 // Default title tag
-const defaultDocumentTitle = 'Admin One Vue 3 Tailwind'
+const defaultDocumentTitle = '중앙 API 프록시 서비스'
 
 // Set document title from route meta
 router.afterEach((to) => {
@@ -42,3 +68,6 @@ router.afterEach((to) => {
     ? `${to.meta.title} — ${defaultDocumentTitle}`
     : defaultDocumentTitle
 })
+
+
+
