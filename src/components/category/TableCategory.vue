@@ -8,6 +8,8 @@ import BaseButtons from '@/components/BaseButtons.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import {useCategoryStore} from "@/stores/useCategoryStore";
+import apiClient from "@/apiClient";
+import {toast} from "vue3-toastify";
 
 defineProps({
   checkable: Boolean
@@ -64,17 +66,29 @@ const checked = (isChecked, client) => {
     checkedRows.value = remove(checkedRows.value, (row) => row.id === client.id)
   }
 }
+
+const deleteClient = ref({})
+const selectedDescription = ref('')
+const deleteItem = () => {
+  apiClient.delete(`/api/category/${deleteClient.value.id}`)
+      .then(res => {
+        toast(`${deleteClient?.value.name} is deleted.`)
+        categoryStore.fetchCategories()
+      }).catch(err => {
+        toast(err.message)
+  })
+}
+
+
 </script>
 
 <template>
   <CardBoxModal v-model="isModalActive" title="Sample modal">
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
+    <p>{{ selectedDescription.value }}</p>
   </CardBoxModal>
 
-  <CardBoxModal v-model="isModalDangerActive" title="Please confirm" button="danger" has-cancel @confirm="args => { console.log(args) }">
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
+  <CardBoxModal v-model="isModalDangerActive" title="Warning" button="danger" has-cancel @confirm="() => { deleteItem() }">
+    <p>Do you really want to <b>delete this?</b></p>
   </CardBoxModal>
 
   <table>
@@ -105,12 +119,12 @@ const checked = (isChecked, client) => {
       </td>
       <td class="before:hidden lg:w-1 whitespace-nowrap">
         <BaseButtons type="justify-start lg:justify-end" no-wrap>
-          <BaseButton color="info" :icon="mdiEye" small @click="isModalActive = true" />
+          <BaseButton color="info" :icon="mdiEye" small @click="() => {isModalActive = true; selectedDescription = client.description}"/>
           <BaseButton
               color="danger"
               :icon="mdiTrashCan"
               small
-              @click="isModalDangerActive = true"
+              @click="() => {isModalDangerActive = true; deleteClient = client}"
           />
         </BaseButtons>
       </td>

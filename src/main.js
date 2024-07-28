@@ -7,7 +7,9 @@ import { useMainStore } from '@/stores/main.js'
 
 import './css/main.css'
 import keycloak from "@/keycloak";
-import {useCategoryStore} from "@/stores/useCategoryStore";
+import Vue3Toasity from 'vue3-toastify'
+import "vue3-toastify/dist/index.css";
+
 // keycloak init
 
 // src/main.js
@@ -18,7 +20,9 @@ keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
     keycloak.loadUserInfo().then((info) => {
       mainStore.setUser({ name: info.preferred_username })
     })
-    createApp(App).use(router).use(pinia).mount('#app')
+    createApp(App).use(router).use(pinia)
+        .use(Vue3Toasity)
+        .mount('#app')
   }
 
   // Optional: Add a token refresher

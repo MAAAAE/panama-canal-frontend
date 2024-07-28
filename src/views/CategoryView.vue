@@ -10,7 +10,7 @@
 
       <base-divider></base-divider>
 
-      <SectionTitleLineWithButton :icon="mdiChartPie" title="tables">
+      <SectionTitleLineWithButton :icon="mdiChartPie" title="categories">
       </SectionTitleLineWithButton>
 
       <CardBox class="mb-6" has-table>
@@ -42,13 +42,8 @@
 <script setup>
 import {
   mdiMonitorCellphone,
-  mdiTableBorder,
-  mdiTableOff,
-  mdiGithub,
   mdiTag,
-  mdiAccount,
-  mdiMail,
-  mdiChartPie, mdiReload
+  mdiChartPie
 } from '@mdi/js'
 import SectionMain from '@/components/SectionMain.vue'
 import NotificationBar from '@/components/NotificationBar.vue'
@@ -63,11 +58,13 @@ import {onMounted, reactive} from "vue";
 import TableCategory from "@/components/category/TableCategory.vue";
 import apiClient from "@/apiClient";
 import {useCategoryStore} from "@/stores/useCategoryStore";
+import {toast} from "vue3-toastify";
 
 const submit = () => {
-  console.log('submitted')
+
   apiClient.post('/api/category', form)
       .then(() => {
+        toast('creating category completed!')
         categoryStore.fetchCategories()
       })
 }
@@ -78,7 +75,7 @@ const form = reactive({
   description: ''
 })
 
- const categoryStore = useCategoryStore()
+const categoryStore = useCategoryStore()
 onMounted(() => {
   categoryStore.fetchCategories()
 })
