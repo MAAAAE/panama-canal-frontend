@@ -7,6 +7,7 @@ import { useMainStore } from '@/stores/main.js'
 
 import './css/main.css'
 import keycloak from "@/keycloak";
+import {useCategoryStore} from "@/stores/useCategoryStore";
 // keycloak init
 
 // src/main.js
@@ -43,7 +44,6 @@ const mainStore = useMainStore(pinia)
 
 // Fetch sample data
 mainStore.fetchSampleClients()
-mainStore.fetchCategories()
 mainStore.fetchSampleHistory()
 
 // Dark mode

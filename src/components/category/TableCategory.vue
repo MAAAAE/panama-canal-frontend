@@ -1,6 +1,5 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { useMainStore } from '@/stores/main'
 import { mdiEye, mdiTrashCan } from '@mdi/js'
 import CardBoxModal from '@/components/CardBoxModal.vue'
 import TableCheckboxCell from '@/components/TableCheckboxCell.vue'
@@ -8,14 +7,15 @@ import BaseLevel from '@/components/BaseLevel.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
+import {useCategoryStore} from "@/stores/useCategoryStore";
 
 defineProps({
   checkable: Boolean
 })
 
-const mainStore = useMainStore()
+const categoryStore = useCategoryStore()
 
-const items = computed(() => mainStore.categories)
+const items = computed(() => categoryStore.categories)
 
 const isModalActive = ref(false)
 
@@ -82,8 +82,9 @@ const checked = (isChecked, client) => {
     <tr>
       <th v-if="checkable" />
       <th />
-      <th>카테고리명</th>
-      <th>API 갯수</th>
+      <th>Name</th>
+      <th>Domain</th>
+      <th>count</th>
       <th />
     </tr>
     </thead>
@@ -96,8 +97,11 @@ const checked = (isChecked, client) => {
       <td data-label="Name">
         {{ client.name }}
       </td>
+      <td data-label="Domain">
+        {{ client.domain }}
+      </td>
       <td data-label="Count">
-        {{ client.count }}
+        {{ client.domain }}
       </td>
       <td class="before:hidden lg:w-1 whitespace-nowrap">
         <BaseButtons type="justify-start lg:justify-end" no-wrap>
