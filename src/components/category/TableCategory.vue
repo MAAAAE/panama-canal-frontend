@@ -1,21 +1,28 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { useMainStore } from '@/stores/main'
-import { mdiEye, mdiTrashCan } from '@mdi/js'
+import {computed, ref} from 'vue'
+import {mdiMail, mdiPencil, mdiTag, mdiTrashCan} from '@mdi/js'
 import CardBoxModal from '@/components/CardBoxModal.vue'
 import TableCheckboxCell from '@/components/TableCheckboxCell.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
+import FormField from "@/components/FormField.vue";
+import FormControl from "@/components/FormControl.vue";
+import CardBox from "@/components/CardBox.vue";
+import {
+  categoryStore,
+  deleteCategory,
+  deleteItem,
+  updateCategory,
+  update
+} from "@/service/CategoryService"
 
 defineProps({
   checkable: Boolean
 })
 
-const mainStore = useMainStore()
-
-const items = computed(() => mainStore.categories)
+const items = computed(() => categoryStore.categories)
 
 const isModalActive = ref(false)
 
@@ -64,17 +71,36 @@ const checked = (isChecked, client) => {
     checkedRows.value = remove(checkedRows.value, (row) => row.id === client.id)
   }
 }
+
+const viewDetail = (form) => {
+  isModalActive.value = true;
+  updateCategory.value = form
+}
+
+
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalActive" title="Sample modal">
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
+  <CardBoxModal v-model="isModalActive" title="Sample modal" has-cancel @confirm="() => {update()}"
+                button-label="update">
+    <CardBox form @submit.prevent="update">
+      <FormField label="category name & domain" help="특수문자는 입력할 수 없습니다.">
+        <FormControl v-model="updateCategory.name" type="text" placeholder="ex. OPEN-API" :icon="mdiTag"/>
+        <FormControl v-model="updateCategory.domain" type="email" :icon="mdiMail" placeholder="ex. openapi.com"/>
+      </FormField>
+      <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+      <textarea
+        id="description"
+        v-model="updateCategory.description"
+        rows="10"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        placeholder="Enter your description here..."
+    ></textarea>
+    </CardBox>
   </CardBoxModal>
 
-  <CardBoxModal v-model="isModalDangerActive" title="Please confirm" button="danger" has-cancel @confirm="args => { console.log(args) }">
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
+  <CardBoxModal v-model="isModalDangerActive" title="Warning" button="danger" has-cancel @confirm="() => { deleteItem() }">
+    <p>Do you really want to <b>delete this?</b></p>
   </CardBoxModal>
 
   <table>
@@ -82,8 +108,9 @@ const checked = (isChecked, client) => {
     <tr>
       <th v-if="checkable" />
       <th />
-      <th>카테고리명</th>
-      <th>API 갯수</th>
+      <th>Name</th>
+      <th>Domain</th>
+      <th>Desc</th>
       <th />
     </tr>
     </thead>
@@ -96,17 +123,20 @@ const checked = (isChecked, client) => {
       <td data-label="Name">
         {{ client.name }}
       </td>
-      <td data-label="Count">
-        {{ client.count }}
+      <td data-label="Domain">
+        {{ client.domain }}
+      </td>
+      <td data-label="desc">
+        {{ client.description }}
       </td>
       <td class="before:hidden lg:w-1 whitespace-nowrap">
         <BaseButtons type="justify-start lg:justify-end" no-wrap>
-          <BaseButton color="info" :icon="mdiEye" small @click="isModalActive = true" />
+          <BaseButton color="info" :icon="mdiPencil" small @click="() => {viewDetail({ ...client }) }"/>
           <BaseButton
               color="danger"
               :icon="mdiTrashCan"
               small
-              @click="isModalDangerActive = true"
+              @click="() => {isModalDangerActive = true; deleteCategory = client}"
           />
         </BaseButtons>
       </td>

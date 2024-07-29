@@ -2,7 +2,7 @@ import axios from 'axios'
 import keycloak from "@/keycloak";
 
 const apiClient = axios.create({
-    baseURL: 'https://localhost:8080', // API의 기본 URL을 설정합니다.
+    baseURL: 'http://localhost:5173', // API의 기본 URL을 설정합니다.
     timeout: 10000, // 요청 타임아웃을 설정합니다.
 })
 

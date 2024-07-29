@@ -1,60 +1,68 @@
-<script setup>
-import {mdiMonitorCellphone, mdiTableBorder, mdiTableOff, mdiGithub, mdiTag, mdiAccount, mdiMail} from '@mdi/js'
-import SectionMain from '@/components/SectionMain.vue'
-import NotificationBar from '@/components/NotificationBar.vue'
-import TableSampleClients from '@/components/TableSampleClients.vue'
-import CardBox from '@/components/CardBox.vue'
-import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
-import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
-import BaseButton from '@/components/BaseButton.vue'
-import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue'
-import FormControl from "@/components/FormControl.vue";
-import BaseButtons from "@/components/BaseButtons.vue";
-import BaseDivider from "@/components/BaseDivider.vue";
-import FormField from "@/components/FormField.vue";
-import {reactive} from "vue";
-import TableCategory from "@/components/category/TableCategory.vue";
-
-const submit = () => {
-  //
-}
-const form = reactive({
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-  phone: '',
-  department: '',
-  subject: '',
-  question: ''
-})
-
-</script>
-
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <SectionTitleLineWithButton :icon="mdiTag" title="Category 관리" main>
+      <SectionTitleLineWithButton :icon="mdiTag" title="Category" main>
       </SectionTitleLineWithButton>
       <NotificationBar color="info" :icon="mdiMonitorCellphone">
         <b>API 들의 카테고리를 관리하는 메뉴입니다.</b>
       </NotificationBar>
 
-      <CardBox form @submit.prevent="submit">
-        <FormField label="카테고리 추가" help="특수문자는 입력할 수 없습니다.">
-          <FormControl v-model="form.phone" type="tel" placeholder="카테고리 명을 입력하고 엔터를 해주세요. ex. OPEN-API" />
-        </FormField>
-      </CardBox>
 
       <base-divider></base-divider>
+
+      <SectionTitleLineWithButton :icon="mdiChartPie" title="categories">
+      </SectionTitleLineWithButton>
+
       <CardBox class="mb-6" has-table>
-        <TableCategory checkable />
+        <TableCategory checkable/>
       </CardBox>
 
-      <SectionTitleLineWithButton :icon="mdiTableOff" title="Empty variation" />
 
-      <NotificationBar color="danger" :icon="mdiTableOff">
-        <b>Empty table.</b> When there's nothing to show
-      </NotificationBar>
+      <base-divider></base-divider>
+      <SectionTitleLineWithButton :icon="mdiChartPie" title="create">
+      </SectionTitleLineWithButton>
+
+      <CardBox form @submit.prevent="create">
+        <FormField label="category name & domain" help="특수문자는 입력할 수 없습니다.">
+          <FormControl v-model="createCategory.name" type="text" placeholder="ex. OPEN-API" :icon="mdiTag"/>
+          <FormControl v-model="createCategory.domain" type="email" :icon="mdiMail" placeholder="ex. openapi.com"/>
+        </FormField>
+        <FormField label="description" help="특수문자는 입력할 수 없습니다.">
+          <FormControl v-model="createCategory.description" type="text" placeholder="description.." :icon="mdiNote"/>
+        </FormField>
+        <template #footer>
+          <BaseButton label="Create" type="submit" color="info" @click="create"/>
+        </template>
+      </CardBox>
 
     </SectionMain>
   </LayoutAuthenticated>
 </template>
+
+
+<script setup>
+import {
+  mdiMonitorCellphone,
+  mdiTag,
+  mdiChartPie, mdiMail, mdiNote
+} from '@mdi/js'
+import SectionMain from '@/components/SectionMain.vue'
+import NotificationBar from '@/components/NotificationBar.vue'
+import CardBox from '@/components/CardBox.vue'
+import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
+import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
+import BaseButton from '@/components/BaseButton.vue'
+import FormControl from "@/components/FormControl.vue";
+import BaseDivider from "@/components/BaseDivider.vue";
+import FormField from "@/components/FormField.vue";
+import {onMounted} from "vue";
+import TableCategory from "@/components/category/TableCategory.vue";
+import {useCategoryStore} from "@/stores/useCategoryStore";
+import {create, createCategory} from "@/service/CategoryService"
+
+const categoryStore = useCategoryStore()
+onMounted(() => {
+  categoryStore.fetchCategories()
+})
+
+</script>
