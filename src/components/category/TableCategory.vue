@@ -16,7 +16,7 @@ import {
   deleteItem,
   updateCategory,
   update
-} from "@/service/CategoryService"
+} from "@/service/category/CategoryService"
 
 defineProps({
   checkable: Boolean

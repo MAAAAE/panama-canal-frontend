@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { useDarkModeStore } from '@/stores/darkMode.js'
+import { useDarkModeStore } from '@/stores/common/darkMode.js'
 import { gradientBgPurplePink } from '@/colors.js'
 import SectionMain from '@/components/SectionMain.vue'
 import CardBox from '@/components/CardBox.vue'

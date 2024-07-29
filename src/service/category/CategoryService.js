@@ -1,4 +1,4 @@
-import {useCategoryStore} from "@/stores/useCategoryStore";
+import {useCategoryStore} from "@/stores/category/useCategoryStore";
 import {reactive, ref} from "vue";
 import apiClient from "@/apiClient";
 import {toast} from "vue3-toastify";

@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '@/views/HomeView.vue'
+import Home from '@/views/common/HomeView.vue'
 import keycloak from "@/keycloak";
 import { useMainStore } from '@/stores/main'
 
@@ -21,7 +21,7 @@ const routes = [
     },
     path: '/tables',
     name: 'tables',
-    component: () => import('@/views/TablesView.vue')
+    component: () => import('@/views/common/TablesView.vue')
   },
   {
     meta: {
@@ -29,7 +29,7 @@ const routes = [
     },
     path: '/forms',
     name: 'forms',
-    component: () => import('@/views/FormsView.vue')
+    component: () => import('@/views/common/FormsView.vue')
   },
   {
     meta: {
@@ -37,7 +37,7 @@ const routes = [
     },
     path: '/profile',
     name: 'profile',
-    component: () => import('@/views/ProfileView.vue')
+    component: () => import('@/views/common/ProfileView.vue')
   },
   {
     meta: {
@@ -45,7 +45,7 @@ const routes = [
     },
     path: '/ui',
     name: 'ui',
-    component: () => import('@/views/UiView.vue')
+    component: () => import('@/views/common/UiView.vue')
   },
   {
     meta: {
@@ -53,7 +53,7 @@ const routes = [
     },
     path: '/responsive',
     name: 'responsive',
-    component: () => import('@/views/ResponsiveView.vue')
+    component: () => import('@/views/common/ResponsiveView.vue')
   },
   {
     meta: {
@@ -61,7 +61,7 @@ const routes = [
     },
     path: '/login',
     name: 'login',
-    component: () => import('@/views/LoginView.vue')
+    component: () => import('@/views/common/LoginView.vue')
   },
   {
     meta: {
@@ -69,7 +69,7 @@ const routes = [
     },
     path: '/category',
     name: 'category',
-    component: () => import('@/views/CategoryView.vue')
+    component: () => import('@/views/category/CategoryView.vue')
   },
   {
     meta: {
@@ -77,7 +77,7 @@ const routes = [
     },
     path: '/error',
     name: 'error',
-    component: () => import('@/views/ErrorView.vue')
+    component: () => import('@/views/common/ErrorView.vue')
   }
 ]
 
