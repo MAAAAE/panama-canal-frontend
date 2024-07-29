@@ -1,21 +1,26 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { mdiEye, mdiTrashCan } from '@mdi/js'
+import {computed, ref} from 'vue'
+import {mdiMail, mdiPencil, mdiTag, mdiTrashCan} from '@mdi/js'
 import CardBoxModal from '@/components/CardBoxModal.vue'
 import TableCheckboxCell from '@/components/TableCheckboxCell.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
-import {useCategoryStore} from "@/stores/useCategoryStore";
-import apiClient from "@/apiClient";
-import {toast} from "vue3-toastify";
+import FormField from "@/components/FormField.vue";
+import FormControl from "@/components/FormControl.vue";
+import CardBox from "@/components/CardBox.vue";
+import {
+  categoryStore,
+  deleteCategory,
+  deleteItem,
+  updateCategory,
+  update
+} from "@/service/CategoryService"
 
 defineProps({
   checkable: Boolean
 })
-
-const categoryStore = useCategoryStore()
 
 const items = computed(() => categoryStore.categories)
 
@@ -67,24 +72,31 @@ const checked = (isChecked, client) => {
   }
 }
 
-const deleteClient = ref({})
-const selectedDescription = ref('')
-const deleteItem = () => {
-  apiClient.delete(`/api/category/${deleteClient.value.id}`)
-      .then(res => {
-        toast(`${deleteClient?.value.name} is deleted.`)
-        categoryStore.fetchCategories()
-      }).catch(err => {
-        toast(err.message)
-  })
+const viewDetail = (form) => {
+  isModalActive.value = true;
+  updateCategory.value = form
 }
 
 
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalActive" title="Sample modal">
-    <p>{{ selectedDescription.value }}</p>
+  <CardBoxModal v-model="isModalActive" title="Sample modal" has-cancel @confirm="() => {update()}"
+                button-label="update">
+    <CardBox form @submit.prevent="update">
+      <FormField label="category name & domain" help="특수문자는 입력할 수 없습니다.">
+        <FormControl v-model="updateCategory.name" type="text" placeholder="ex. OPEN-API" :icon="mdiTag"/>
+        <FormControl v-model="updateCategory.domain" type="email" :icon="mdiMail" placeholder="ex. openapi.com"/>
+      </FormField>
+      <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+      <textarea
+        id="description"
+        v-model="updateCategory.description"
+        rows="10"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        placeholder="Enter your description here..."
+    ></textarea>
+    </CardBox>
   </CardBoxModal>
 
   <CardBoxModal v-model="isModalDangerActive" title="Warning" button="danger" has-cancel @confirm="() => { deleteItem() }">
@@ -119,12 +131,12 @@ const deleteItem = () => {
       </td>
       <td class="before:hidden lg:w-1 whitespace-nowrap">
         <BaseButtons type="justify-start lg:justify-end" no-wrap>
-          <BaseButton color="info" :icon="mdiEye" small @click="() => {isModalActive = true; selectedDescription = client.description}"/>
+          <BaseButton color="info" :icon="mdiPencil" small @click="() => {viewDetail({ ...client }) }"/>
           <BaseButton
               color="danger"
               :icon="mdiTrashCan"
               small
-              @click="() => {isModalDangerActive = true; deleteClient = client}"
+              @click="() => {isModalDangerActive = true; deleteCategory = client}"
           />
         </BaseButtons>
       </td>

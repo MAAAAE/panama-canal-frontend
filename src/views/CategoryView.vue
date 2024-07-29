@@ -22,16 +22,16 @@
       <SectionTitleLineWithButton :icon="mdiChartPie" title="create">
       </SectionTitleLineWithButton>
 
-      <CardBox form @submit.prevent="submit">
+      <CardBox form @submit.prevent="create">
         <FormField label="category name & domain" help="특수문자는 입력할 수 없습니다.">
-          <FormControl v-model="form.name" type="text" placeholder="ex. OPEN-API" :icon="mdiTag"/>
-          <FormControl v-model="form.domain" type="email" :icon="mdiMail" placeholder="ex. openapi.com"/>
+          <FormControl v-model="createCategory.name" type="text" placeholder="ex. OPEN-API" :icon="mdiTag"/>
+          <FormControl v-model="createCategory.domain" type="email" :icon="mdiMail" placeholder="ex. openapi.com"/>
         </FormField>
         <FormField label="description" help="특수문자는 입력할 수 없습니다.">
-          <FormControl v-model="form.description" type="text" placeholder="description.." :icon="mdiNote"/>
+          <FormControl v-model="createCategory.description" type="text" placeholder="description.." :icon="mdiNote"/>
         </FormField>
         <template #footer>
-          <BaseButton label="Create" type="submit" color="info" @click="submit"/>
+          <BaseButton label="Create" type="submit" color="info" @click="create"/>
         </template>
       </CardBox>
 
@@ -55,26 +55,10 @@ import BaseButton from '@/components/BaseButton.vue'
 import FormControl from "@/components/FormControl.vue";
 import BaseDivider from "@/components/BaseDivider.vue";
 import FormField from "@/components/FormField.vue";
-import {onMounted, reactive} from "vue";
+import {onMounted} from "vue";
 import TableCategory from "@/components/category/TableCategory.vue";
-import apiClient from "@/apiClient";
 import {useCategoryStore} from "@/stores/useCategoryStore";
-import {toast} from "vue3-toastify";
-
-const submit = () => {
-
-  apiClient.post('/api/category', form)
-      .then(() => {
-        toast('creating category completed!')
-        categoryStore.fetchCategories()
-      })
-}
-const form = reactive({
-  name: '',
-  domain: '',
-  secret: '',
-  description: ''
-})
+import {create, createCategory} from "@/service/CategoryService"
 
 const categoryStore = useCategoryStore()
 onMounted(() => {
