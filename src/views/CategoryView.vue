@@ -23,11 +23,12 @@
       </SectionTitleLineWithButton>
 
       <CardBox form @submit.prevent="submit">
-        <FormField label="카테고리 추가" help="특수문자는 입력할 수 없습니다.">
-          <FormControl v-model="form.name" type="text" placeholder="ex. OPEN-API"/>
+        <FormField label="category name & domain" help="특수문자는 입력할 수 없습니다.">
+          <FormControl v-model="form.name" type="text" placeholder="ex. OPEN-API" :icon="mdiTag"/>
+          <FormControl v-model="form.domain" type="email" :icon="mdiMail" placeholder="ex. openapi.com"/>
         </FormField>
-        <FormField label="domain" help="특수문자는 입력할 수 없습니다.">
-          <FormControl v-model="form.domain" type="text" placeholder="domain.com"/>
+        <FormField label="description" help="특수문자는 입력할 수 없습니다.">
+          <FormControl v-model="form.description" type="text" placeholder="description.." :icon="mdiNote"/>
         </FormField>
         <template #footer>
           <BaseButton label="Create" type="submit" color="info" @click="submit"/>
@@ -43,7 +44,7 @@
 import {
   mdiMonitorCellphone,
   mdiTag,
-  mdiChartPie
+  mdiChartPie, mdiMail, mdiNote
 } from '@mdi/js'
 import SectionMain from '@/components/SectionMain.vue'
 import NotificationBar from '@/components/NotificationBar.vue'
@@ -69,7 +70,7 @@ const submit = () => {
       })
 }
 const form = reactive({
-  name: 'John Doe',
+  name: '',
   domain: '',
   secret: '',
   description: ''

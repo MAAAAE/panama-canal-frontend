@@ -98,7 +98,7 @@ const deleteItem = () => {
       <th />
       <th>Name</th>
       <th>Domain</th>
-      <th>count</th>
+      <th>Desc</th>
       <th />
     </tr>
     </thead>
@@ -114,8 +114,8 @@ const deleteItem = () => {
       <td data-label="Domain">
         {{ client.domain }}
       </td>
-      <td data-label="Count">
-        {{ client.domain }}
+      <td data-label="desc">
+        {{ client.description }}
       </td>
       <td class="before:hidden lg:w-1 whitespace-nowrap">
         <BaseButtons type="justify-start lg:justify-end" no-wrap>
