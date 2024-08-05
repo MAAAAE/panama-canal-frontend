@@ -26,9 +26,7 @@ const deleteItem = () => {
         .then(res => {
             toast(`${deleteCategory?.value.name} is deleted.`)
             categoryStore.fetchCategories()
-        }).catch(err => {
-        toast(err.message)
-    })
+        })
 }
 
 const updateCategory = ref({})
