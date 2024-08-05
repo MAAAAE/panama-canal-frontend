@@ -6,7 +6,6 @@ import TableCheckboxCell from '@/components/TableCheckboxCell.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseButton from '@/components/BaseButton.vue'
-import UserAvatar from '@/components/UserAvatar.vue'
 import FormField from "@/components/FormField.vue";
 import FormControl from "@/components/FormControl.vue";
 import CardBox from "@/components/CardBox.vue";
@@ -107,9 +106,9 @@ const viewDetail = (form) => {
     <thead>
     <tr>
       <th v-if="checkable" />
-      <th />
       <th>Name</th>
       <th>Domain</th>
+      <th>Secret</th>
       <th>Desc</th>
       <th />
     </tr>
@@ -117,14 +116,14 @@ const viewDetail = (form) => {
     <tbody>
     <tr v-for="client in itemsPaginated" :key="client.id">
       <TableCheckboxCell v-if="checkable" @checked="checked($event, client)" />
-      <td class="border-b-0 lg:w-6 before:hidden">
-        <UserAvatar :username="client.name" class="w-24 h-24 mx-auto lg:w-6 lg:h-6" />
-      </td>
       <td data-label="Name">
         {{ client.name }}
       </td>
       <td data-label="Domain">
         {{ client.domain }}
+      </td>
+      <td data-label="secret">
+        {{ client.secret }}
       </td>
       <td data-label="desc">
         {{ client.description }}
