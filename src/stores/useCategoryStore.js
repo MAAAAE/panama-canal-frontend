@@ -1,7 +1,5 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import axios from "axios";
-import {toast} from "vue3-toastify";
 import apiClient from "@/apiClient";
 
 export const useCategoryStore = defineStore('category', () => {
