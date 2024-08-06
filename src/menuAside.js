@@ -18,7 +18,7 @@ export default [
   },
   {
     label: 'API 관리',
-    to: '/api',
+    to: '/spec',
     icon: mdiViewList,
     menu: [
       {

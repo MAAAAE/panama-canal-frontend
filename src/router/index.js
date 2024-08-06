@@ -73,6 +73,14 @@ const routes = [
   },
   {
     meta: {
+      title: 'API 관리'
+    },
+    path: '/spec',
+    name: 'spec',
+    component: () => import('@/views/spec/SpecView.vue')
+  },
+  {
+    meta: {
       title: 'Error'
     },
     path: '/error',
