@@ -30,7 +30,7 @@
         <FormField label="secret" help="api secret key">
           <FormControl v-model="createCategory.secretKey" type="text" placeholder="secret key.. ex) Authorization" :icon="mdiAccountKey"/>
           <FormControl v-model="createCategory.secretValue" type="text" placeholder="secret value.. ex)ehJz..." :icon="mdiAccountKey"/>
-          <FormControl v-model="createCategory.secretType" type="select" :icon="mdiMail" :options="['PARAMETER', 'HEADER']"/>
+          <FormControl v-model="createCategory.secretType" type="select" :icon="mdiMail" :options="['NONE','PARAMETER', 'HEADER']"/>
         </FormField>
         <FormField label="description">
           <FormControl v-model="createCategory.description" type="text" placeholder="description.." :icon="mdiNote"/>

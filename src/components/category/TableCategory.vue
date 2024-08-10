@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref} from 'vue'
-import {mdiHead, mdiKey, mdiMail, mdiPencil, mdiTag, mdiTrashCan} from '@mdi/js'
+import {mdiAccountQuestion, mdiHead, mdiKey, mdiMail, mdiNote, mdiPencil, mdiTag, mdiTrashCan} from '@mdi/js'
 import CardBoxModal from '@/components/CardBoxModal.vue'
 import TableCheckboxCell from '@/components/TableCheckboxCell.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
@@ -93,8 +93,8 @@ const viewDetail = (form) => {
         <FormControl v-model="updateCategory.secretValue" type="text" :icon="mdiKey" placeholder="<key value>"/>
       </FormField>
       <FormField label="secret Type & desc">
-        <FormControl v-model="updateCategory.secretType" type="select" :icon="mdiMail" placeholder="type"/>
-        <FormControl v-model="updateCategory.description" type="text" :icon="mdiMail" placeholder="desc"/>
+        <FormControl v-model="updateCategory.secretType" type="select" :icon="mdiAccountQuestion" placeholder="type" :options="['NONE','PARAMETER', 'HEADER']"/>
+        <FormControl v-model="updateCategory.description" type="text" :icon="mdiNote" placeholder="desc"/>
       </FormField>
     </CardBox>
   </CardBoxModal>
