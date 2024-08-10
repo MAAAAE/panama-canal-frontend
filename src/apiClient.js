@@ -36,7 +36,7 @@ apiClient.interceptors.response.use(
     }
 )
 
-const handleError = (error) => toast(error.message, {
+const handleError = (error) => toast(error.response?.data.errorMessage ? error.response.data.errorMessage : error, {
     "theme": "auto",
     "type": "error",
     "transition": "flip",
