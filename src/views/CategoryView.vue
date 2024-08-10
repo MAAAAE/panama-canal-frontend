@@ -28,7 +28,9 @@
           <FormControl v-model="createCategory.domain" type="email" :icon="mdiMail" placeholder="ex. openapi.com"/>
         </FormField>
         <FormField label="secret" help="api secret key">
-          <FormControl v-model="createCategory.secret" type="text" placeholder="secret.." :icon="mdiAccountKey"/>
+          <FormControl v-model="createCategory.secretKey" type="text" placeholder="secret key.. ex) Authorization" :icon="mdiAccountKey"/>
+          <FormControl v-model="createCategory.secretValue" type="text" placeholder="secret value.. ex)ehJz..." :icon="mdiAccountKey"/>
+          <FormControl v-model="createCategory.secretType" type="select" :icon="mdiMail" :options="['PARAMETER', 'HEADER']"/>
         </FormField>
         <FormField label="description">
           <FormControl v-model="createCategory.description" type="text" placeholder="description.." :icon="mdiNote"/>

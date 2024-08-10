@@ -7,7 +7,9 @@ const categoryStore = useCategoryStore()
 const createCategory = reactive({
     name: '',
     domain: '',
-    secret: '',
+    secretKey: '',
+    secretValue: '',
+    secretType: 'parameter',
     description: ''
 })
 

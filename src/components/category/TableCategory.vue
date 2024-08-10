@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref} from 'vue'
-import {mdiMail, mdiPencil, mdiTag, mdiTrashCan} from '@mdi/js'
+import {mdiHead, mdiKey, mdiMail, mdiPencil, mdiTag, mdiTrashCan} from '@mdi/js'
 import CardBoxModal from '@/components/CardBoxModal.vue'
 import TableCheckboxCell from '@/components/TableCheckboxCell.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
@@ -14,8 +14,9 @@ import {
   deleteCategory,
   deleteItem,
   updateCategory,
-  update
+  update, create
 } from "@/service/CategoryService"
+import PillTag from "@/components/PillTag.vue";
 
 defineProps({
   checkable: Boolean
@@ -80,21 +81,21 @@ const viewDetail = (form) => {
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalActive" title="Sample modal" has-cancel @confirm="() => {update()}"
+  <CardBoxModal v-model="isModalActive" title="update" has-cancel @confirm="() => {update()}"
                 button-label="update">
     <CardBox form @submit.prevent="update">
-      <FormField label="category name & domain" help="특수문자는 입력할 수 없습니다.">
+      <FormField label="category name & domain">
         <FormControl v-model="updateCategory.name" type="text" placeholder="ex. OPEN-API" :icon="mdiTag"/>
         <FormControl v-model="updateCategory.domain" type="email" :icon="mdiMail" placeholder="ex. openapi.com"/>
       </FormField>
-      <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-      <textarea
-        id="description"
-        v-model="updateCategory.description"
-        rows="10"
-        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        placeholder="Enter your description here..."
-    ></textarea>
+      <FormField label="secret Key & Value">
+        <FormControl v-model="updateCategory.secretKey" type="text" placeholder="ex. Authorization" :icon="mdiHead"/>
+        <FormControl v-model="updateCategory.secretValue" type="text" :icon="mdiKey" placeholder="<key value>"/>
+      </FormField>
+      <FormField label="secret Type & desc">
+        <FormControl v-model="updateCategory.secretType" type="select" :icon="mdiMail" placeholder="type"/>
+        <FormControl v-model="updateCategory.description" type="text" :icon="mdiMail" placeholder="desc"/>
+      </FormField>
     </CardBox>
   </CardBoxModal>
 
@@ -108,7 +109,8 @@ const viewDetail = (form) => {
       <th v-if="checkable" />
       <th>Name</th>
       <th>Domain</th>
-      <th>Secret</th>
+      <th>SecretKey</th>
+      <th>SecretValue</th>
       <th>Desc</th>
       <th />
     </tr>
@@ -122,8 +124,12 @@ const viewDetail = (form) => {
       <td data-label="Domain">
         {{ client.domain }}
       </td>
-      <td data-label="secret">
-        {{ client.secret }}
+      <td data-label="secretKey">
+        <PillTag :color="'success'" :label="client.secretType" small/>
+        {{ client.secretKey }}
+      </td>
+      <td data-label="secretValue">
+        {{ client.secretValue }}
       </td>
       <td data-label="desc">
         {{ client.description }}
