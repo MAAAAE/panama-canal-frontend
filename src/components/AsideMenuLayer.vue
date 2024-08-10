@@ -44,7 +44,7 @@ const logout = () => {
     <div class="aside lg:rounded-2xl flex-1 flex flex-col overflow-hidden dark:bg-slate-900">
       <div class="aside-brand flex flex-row h-14 items-center justify-between dark:bg-slate-900">
         <div class="flex-1 lg:text-left lg:pl-6 xl:text-center xl:pl-0">
-          <img src="/panama-title.png" class="max-w-full h-auto ml-3"/>
+          <img src="/panama-title.png" class="max-w-full h-auto ml-3" alt="logo and title"/>
 <!--          <b class="font-black">panama canal</b>-->
         </div>
         <button class="hidden lg:inline-block xl:hidden p-3" @click.prevent="asideLgCloseClick">
