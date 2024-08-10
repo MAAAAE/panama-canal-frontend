@@ -137,7 +137,7 @@ if (props.ctrlKFocus) {
       :class="inputElClass"
       :disabled="disabled"
     >
-      <option v-for="option in options" :key="option.id ?? option" :value="option">
+      <option v-for="option in options" :key="option.id ?? option" :value="option.id ?? option">
         {{ option.label ?? option }}
       </option>
     </select>

@@ -7,13 +7,13 @@
   <hr>
   <div class="mt-8">
     <div
-        v-for="api in apiList"
-        :key="api.id"
+        v-for="api in specStore.specs"
+        :key="api.categoryId"
         :class="['border border-gray-300 rounded-lg mb-4']"
     >
       <div
           class="flex justify-between items-center bg-gray-100 p-4 rounded-t-lg"
-          @click="toggleDetails(api.id)"
+          @click="toggleDetails(api.categoryId)"
       >
         <div class="flex items-center">
               <span
@@ -35,7 +35,7 @@
               label="remove"
               color="danger"
               size="small"
-              @click="deleteAPI(api.id)"
+              @click="deleteAPI(api.categoryId)"
           />
         </div>
       </div>
@@ -57,7 +57,7 @@
             <BaseButton
                 :label="api.showSecret ? 'Hide' : 'Visible'"
                 size="small"
-                @click="toggleSecret(api.id)"
+                @click="toggleSecret(api.categoryId)"
                 class="ml-2"
             />
           </div>
@@ -80,10 +80,12 @@ import FormField from "@/components/FormField.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import FormControl from "@/components/FormControl.vue";
 import { ref } from "vue";
+import {useSpecStore} from "@/stores/spec/userSpecStore";
+
+const specStore = useSpecStore();
 
 const apiList = ref([
   {
-    id: 1,
     method: 'GET',
     title: '주문 조회',
     endpoint: '/api/v1/resource',
@@ -93,7 +95,6 @@ const apiList = ref([
     showDetails: false,
   },
   {
-    id: 2,
     method: 'POST',
     title: '주문 생성',
     endpoint: '/api/v1/resource/create',
@@ -124,19 +125,20 @@ const editAPI = (api) => {
 };
 
 const deleteAPI = (apiId) => {
-  console.log('Delete API ID:', apiId);
-  apiList.value = apiList.value.filter((api) => api.id !== apiId);
+  // TODO: delete API
+  // console.log('Delete API ID:', apiId);
+  // apiList.value = apiList.value.filter((api) => api.id !== apiId);
 };
 
 const toggleDetails = (apiId) => {
-  const api = apiList.value.find((api) => api.id === apiId);
+  const api = specStore.specs.find((api) => api.categoryId === apiId);
   if (api) {
     api.showDetails = !api.showDetails;
   }
 };
 
 const toggleSecret = (apiId) => {
-  const api = apiList.value.find((api) => api.id === apiId);
+  const api = specStore.specs.find((api) => api.categoryId === apiId);
   if (api) {
     api.showSecret = !api.showSecret;
     api.secret = api.showSecret ? 'your-secret-key' : '********************';

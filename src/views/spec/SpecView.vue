@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import {onMounted, ref} from "vue";
 import { mdiEarth, mdiTag } from '@mdi/js';
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionMain from "@/components/SectionMain.vue";
@@ -51,6 +51,19 @@ import FormField from "@/components/FormField.vue";
 import FormControl from "@/components/FormControl.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import SpecList from "@/views/spec/SpecList.vue";
+import {useSpecStore} from "@/stores/spec/userSpecStore";
+
+const specStore = useSpecStore();
+const props = defineProps({
+  categoryId: {
+    type: Number,
+    default: 1,
+  }
+});
+onMounted(() => {
+  specStore.fetchApiSpecs(props.categoryId);
+  console.log(specStore.specs);
+});
 
 
 const createAPISpec = ref({

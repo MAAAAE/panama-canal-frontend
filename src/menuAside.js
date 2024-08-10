@@ -30,6 +30,11 @@ export default [
     ]
   },
   {
+    label: 'Route 관리',
+    to: '/route',
+    icon: mdiViewList,
+  },
+  {
     href: 'https://github.com/justboil/admin-one-vue-tailwind',
     label: 'GitHub',
     icon: mdiGithub,

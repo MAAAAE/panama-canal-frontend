@@ -81,6 +81,14 @@ const routes = [
   },
   {
     meta: {
+      title: 'Route 관리',
+    },
+    path: '/route',
+    name: 'route',
+    component: () => import('@/views/route/RouteView.vue')
+  },
+  {
+    meta: {
       title: 'Error'
     },
     path: '/error',
