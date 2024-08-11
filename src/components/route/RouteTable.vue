@@ -57,7 +57,7 @@
                 title="Edit Route"
                 has-cancel
                 @confirm="editRoute">
-
+    <RouteForm></RouteForm>
   </CardBoxModal>
 </template>
 
@@ -69,6 +69,7 @@ import BaseButtons from '@/components/BaseButtons.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import {deleteDynamicRoute, routeStore} from "@/service/route/RouteService";
 import CardBoxModal from "@/components/CardBoxModal.vue";
+import RouteForm from "@/views/route/RouteForm.vue";
 
 
 const items = computed(() => routeStore.routes)
@@ -83,7 +84,7 @@ const selectedRouteId = ref(null)
 const localRoute = ref({
   id: null,
   uri: '',
-  predicates: [],
+  predicate: '',
   filters: [],
   routeOrder: 1
 })
@@ -105,6 +106,7 @@ const pagesList = computed(() => {
 })
 
 const editRoute = (route) => {
+  // TODO: Filter 수정 어떻게 해야할지 필요.
   localRoute.value = {...route}
   isEditModalActive.value = true
 }
@@ -116,26 +118,6 @@ const confirmDelete = (routeId) => {
 
 const deleteRoute = async () => {
   deleteDynamicRoute(selectedRouteId.value);
-}
-
-const addPredicate = () => {
-  localRoute.value.predicates.push({name: '', args: ''})
-}
-
-const removePredicate = (index) => {
-  localRoute.value.predicates.splice(index, 1)
-}
-
-const addFilter = () => {
-  localRoute.value.filters.push({name: '', args: ''})
-}
-
-const removeFilter = (index) => {
-  localRoute.value.filters.splice(index, 1)
-}
-
-const formattedPredicates = (predicates) => {
-  return predicates.map(p => `${p.name}: ${p.args}`).join(', ')
 }
 
 const formattedFilters = (filters) => {

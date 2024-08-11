@@ -136,6 +136,7 @@ if (props.ctrlKFocus) {
       :name="name"
       :class="inputElClass"
       :disabled="disabled"
+      :required="required"
     >
       <option v-for="option in options" :key="option.id ?? option" :value="option.id ?? option">
         {{ option.label ?? option }}

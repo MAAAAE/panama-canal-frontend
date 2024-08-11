@@ -2,13 +2,14 @@ import apiClient from "@/apiClient";
 import {toast} from "vue3-toastify";
 import {reactive} from "vue";
 import {useRouteStore} from "@/stores/route/useRouteStore";
+import {routeFilterOptions} from "@/views/route/constant/route-filters";
 
 const routeStore = useRouteStore();
 
 const dynamicRoute = reactive({
     uri: '',
     predicate: '',
-    filters: [{filterName: '', param: '', value: ''}],
+    filters: [{filterName: routeFilterOptions[0].id, param: '', value: ''}],
     routeOrder: 1,
 });
 
@@ -32,7 +33,7 @@ const deleteDynamicRoute = (id) => {
 const resetDynamicRoute = () => {
     dynamicRoute.uri = '';
     dynamicRoute.predicate = '';
-    dynamicRoute.filters = [{ filterName: '', param: '', value: '' }];
+    dynamicRoute.filters = [{ filterName: routeFilterOptions[0].id, param: '', value: '' }];
     dynamicRoute.routeOrder = 1;
 };
 
