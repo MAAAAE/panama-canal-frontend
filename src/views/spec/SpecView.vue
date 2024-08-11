@@ -24,10 +24,12 @@
           </div>
         </FormField>
         <FormField label="Custom Route">
-          <FormControl v-model="createAPISpec.customRoute" type="text" placeholder="/open-api" :icon="mdiTag" />
-        </FormField>
-        <FormField label="Headers">
-          <FormControl v-model="createAPISpec.headers" type="text" placeholder="Content-Type: application/json" :icon="mdiTag" />
+          <FormControl
+              v-model="createAPISpec.customRoute"
+              type="select"
+              :options="routeStore.existRoutesOptions"
+              :icon="mdiTag"
+          />
         </FormField>
         <template #footer>
           <div class="flex justify-end">
@@ -52,17 +54,20 @@ import FormControl from "@/components/FormControl.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import SpecList from "@/views/spec/SpecList.vue";
 import {useSpecStore} from "@/stores/spec/userSpecStore";
+import {useRouteStore} from "@/stores/route/useRouteStore";
 
 const specStore = useSpecStore();
+const routeStore = useRouteStore();
 const props = defineProps({
   categoryId: {
     type: Number,
     default: 1,
   }
 });
-onMounted(() => {
-  specStore.fetchApiSpecs(props.categoryId);
-  console.log(specStore.specs);
+onMounted(async () => {
+  await specStore.fetchApiSpecs(props.categoryId);
+  await routeStore.fetchDynamicRouteOptions();
+  console.log(routeStore.existRoutesOptions)
 });
 
 
@@ -70,7 +75,7 @@ const createAPISpec = ref({
   title: '',
   method: 'GET',
   uri: '',
-  customRoute: '',
+  customRoute: routeStore.existRoutesOptions[0]?.id,
   headers: '',
 });
 
