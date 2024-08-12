@@ -1,19 +1,17 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import axios from "axios";
+import apiClient from "@/apiClient";
 
-export const useCategoryStore = defineStore('category' , () => {
+export const useCategoryStore = defineStore('category', () => {
     const categories = ref([])
 
     function fetchCategories() {
-        axios
+        apiClient
             .get(`/api/category/all`)
             .then((result) => {
                 categories.value = result?.data
             })
-            .catch((error) => {
-                alert(error.message)
-            })
+
     }
 
     return {

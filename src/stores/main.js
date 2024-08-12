@@ -5,6 +5,7 @@ import axios from 'axios'
 export const useMainStore = defineStore('main', () => {
   const userName = ref('John Doe')
   const userEmail = ref('doe.doe.doe@example.com')
+  const loginTime = ref(new Date().toISOString())
 
   const userAvatar = computed(
     () =>
@@ -25,6 +26,9 @@ export const useMainStore = defineStore('main', () => {
     }
     if (payload.email) {
       userEmail.value = payload.email
+    }
+    if (payload.loginTime) {
+      loginTime.value = payload.loginTime
     }
   }
 
@@ -53,6 +57,7 @@ export const useMainStore = defineStore('main', () => {
   return {
     userName,
     userEmail,
+    loginTime,
     userAvatar,
     isFieldFocusRegistered,
     clients,

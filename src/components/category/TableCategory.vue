@@ -1,12 +1,11 @@
 <script setup>
 import {computed, ref} from 'vue'
-import {mdiMail, mdiPencil, mdiTag, mdiTrashCan} from '@mdi/js'
+import {mdiAccountQuestion, mdiHead, mdiKey, mdiMail, mdiNote, mdiPencil, mdiTag, mdiTrashCan} from '@mdi/js'
 import CardBoxModal from '@/components/CardBoxModal.vue'
 import TableCheckboxCell from '@/components/TableCheckboxCell.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseButton from '@/components/BaseButton.vue'
-import UserAvatar from '@/components/UserAvatar.vue'
 import FormField from "@/components/FormField.vue";
 import FormControl from "@/components/FormControl.vue";
 import CardBox from "@/components/CardBox.vue";
@@ -15,8 +14,9 @@ import {
   deleteCategory,
   deleteItem,
   updateCategory,
-  update
+  update, create
 } from "@/service/CategoryService"
+import PillTag from "@/components/PillTag.vue";
 
 defineProps({
   checkable: Boolean
@@ -81,21 +81,21 @@ const viewDetail = (form) => {
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalActive" title="Sample modal" has-cancel @confirm="() => {update()}"
+  <CardBoxModal v-model="isModalActive" title="update" has-cancel @confirm="() => {update()}"
                 button-label="update">
     <CardBox form @submit.prevent="update">
-      <FormField label="category name & domain" help="특수문자는 입력할 수 없습니다.">
+      <FormField label="category name & domain">
         <FormControl v-model="updateCategory.name" type="text" placeholder="ex. OPEN-API" :icon="mdiTag"/>
         <FormControl v-model="updateCategory.domain" type="email" :icon="mdiMail" placeholder="ex. openapi.com"/>
       </FormField>
-      <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-      <textarea
-        id="description"
-        v-model="updateCategory.description"
-        rows="10"
-        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        placeholder="Enter your description here..."
-    ></textarea>
+      <FormField label="secret Key & Value">
+        <FormControl v-model="updateCategory.secretKey" type="text" placeholder="ex. Authorization" :icon="mdiHead"/>
+        <FormControl v-model="updateCategory.secretValue" type="text" :icon="mdiKey" placeholder="<key value>"/>
+      </FormField>
+      <FormField label="secret Type & desc">
+        <FormControl v-model="updateCategory.secretType" type="select" :icon="mdiAccountQuestion" placeholder="type" :options="['NONE','PARAMETER', 'HEADER']"/>
+        <FormControl v-model="updateCategory.description" type="text" :icon="mdiNote" placeholder="desc"/>
+      </FormField>
     </CardBox>
   </CardBoxModal>
 
@@ -107,9 +107,10 @@ const viewDetail = (form) => {
     <thead>
     <tr>
       <th v-if="checkable" />
-      <th />
       <th>Name</th>
       <th>Domain</th>
+      <th>SecretKey</th>
+      <th>SecretValue</th>
       <th>Desc</th>
       <th />
     </tr>
@@ -117,14 +118,18 @@ const viewDetail = (form) => {
     <tbody>
     <tr v-for="client in itemsPaginated" :key="client.id">
       <TableCheckboxCell v-if="checkable" @checked="checked($event, client)" />
-      <td class="border-b-0 lg:w-6 before:hidden">
-        <UserAvatar :username="client.name" class="w-24 h-24 mx-auto lg:w-6 lg:h-6" />
-      </td>
       <td data-label="Name">
         {{ client.name }}
       </td>
       <td data-label="Domain">
         {{ client.domain }}
+      </td>
+      <td data-label="secretKey">
+        <PillTag :color="'success'" :label="client.secretType" small/>
+        {{ client.secretKey }}
+      </td>
+      <td data-label="secretValue">
+        {{ client.secretValue }}
       </td>
       <td data-label="desc">
         {{ client.description }}
