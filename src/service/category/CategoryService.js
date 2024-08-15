@@ -2,8 +2,10 @@ import {useCategoryStore} from "@/stores/category/useCategoryStore";
 import {reactive, ref} from "vue";
 import apiClient from "@/apiClient";
 import {toast} from "vue3-toastify";
+import {useMenuStore} from "@/stores/common/useMenuStore";
 
 const categoryStore = useCategoryStore()
+const menuStore = useMenuStore();
 // 초기 상태를 저장
 const initialCategoryState = {
     name: '',
@@ -26,7 +28,8 @@ const create = () => {
     apiClient.post('/api/category', createCategory)
         .then(() => {
             toast('creating category completed!')
-            categoryStore.fetchCategories()
+            categoryStore.fetchCategories();
+            menuStore.fetchMenus();
             resetCreateCategory()
         })
 };

@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import {reactive} from "vue";
 import apiClient from "@/apiClient";
 import {useSpecStore} from "@/stores/spec/userSpecStore";
 import {toast} from "vue3-toastify";
@@ -6,31 +6,29 @@ import {toast} from "vue3-toastify";
 const specStore = useSpecStore();
 
 const createAPISpec = reactive({
-    title: '',
+    name: '',
     method: 'GET',
-    uri: '',
-    customRoute: '',
+    endpoint: '',
+    customRouteId: '',
     request: '',
     response: '',
-    category: 0,
+    categoryId: '',
 });
 
-const createSpec = () => {
-    apiClient.post('/api/specs', createAPISpec)
-        .then(() => {
-            toast('API Spec Created!');
-            resetCreateApiSpec();
-
-        })
+const createSpec = async () => {
+    await apiClient.post('/api/specs', createAPISpec);
+    toast('API Spec Created!');
+    resetCreateApiSpec();
 }
 
 const resetCreateApiSpec = () => {
-    createAPISpec.uri = '';
-    createAPISpec.title = '';
+    createAPISpec.endpoint = '';
+    createAPISpec.name = '';
     createAPISpec.method = 'GET';
-    createAPISpec.customRoute = '';
+    createAPISpec.customRouteId = '';
     createAPISpec.request = '';
     createAPISpec.response = '';
+    createAPISpec.categoryId = '';
 }
 
 export {

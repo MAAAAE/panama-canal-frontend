@@ -1,36 +1,43 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import axios from "axios";
-import {toast} from "vue3-toastify";
-import {parsePanamaErrorMessage} from "@/utils/error-utils";
+import apiClient from "@/apiClient";
 
-export const useCategoryStore = defineStore('category' , () => {
+export const useCategoryStore = defineStore('category', () => {
     const categories = ref([]);
     const categoryOptions = ref([]);
+    const category = ref({});
 
-    function fetchCategories() {
-        axios
+    const fetchCategories = () => {
+        apiClient
             .get(`/api/category/all`)
             .then((result) => {
-                categories.value = result?.data
-            })
-            .catch((error) => {
-                alert(error.message)
-            })
+                categories.value = result?.data;
+            });
+
+    };
+
+    const fetchCategoryById = (id) => {
+        apiClient
+            .get(`/api/category/${id}`)
+            .then(result => {
+                category.value = result?.data;
+            });
     }
 
     const fetchCategoryOptions = () => {
-        axios
+        apiClient
             .get(`/api/category/options`)
             .then(result => {
                 categoryOptions.value = result?.data;
-            }).catch(error => toast.error(`Get Category Options Failed ${parsePanamaErrorMessage(error)}`));
-    }
+            });
+    };
 
     return {
         categories,
+        category,
         categoryOptions,
         fetchCategories,
         fetchCategoryOptions,
+        fetchCategoryById,
     }
 })

@@ -1,9 +1,9 @@
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <CardBox is-form @submit.prevent="createSpec">
+      <CardBox is-form @submit.prevent="onSubmit">
         <FormField label="Title">
-          <FormControl v-model="createAPISpec.title" type="text" placeholder="ex. OPEN-API" :icon="mdiTag"/>
+          <FormControl v-model="createAPISpec.name" type="text" placeholder="ex. OPEN-API" :icon="mdiTag"/>
         </FormField>
         <FormField label="Endpoint">
           <div class="flex space-x-2">
@@ -16,7 +16,7 @@
             />
             <FormControl
                 class="flex-grow"
-                v-model="createAPISpec.uri"
+                v-model="createAPISpec.endpoint"
                 type="text"
                 placeholder="https://localhost:8080/"
                 :icon="mdiEarth"
@@ -25,18 +25,10 @@
         </FormField>
         <FormField label="Custom Route">
           <FormControl
-              v-model="createAPISpec.customRoute"
+              v-model="createAPISpec.customRouteId"
               type="select"
               :options="routeStore.existRoutesOptions"
               :icon="mdiTag"
-          />
-        </FormField>
-        <FormField label="Category">
-          <FormControl
-            v-model="createAPISpec.category"
-            type="select"
-            :options="categoryStore.categoryOptions"
-            :icon="mdiTag"
           />
         </FormField>
         <FormField label="Request Example">
@@ -49,10 +41,10 @@
         </FormField>
         <FormField label="Response Example">
           <PrismEditor
-            class="my-editor"
-            v-model="createAPISpec.response"
-            :highlight="highlighter"
-            line-numbers
+              class="my-editor"
+              v-model="createAPISpec.response"
+              :highlight="highlighter"
+              line-numbers
           />
         </FormField>
         <template #footer>
@@ -68,7 +60,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {mdiEarth, mdiTag} from '@mdi/js';
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionMain from "@/components/SectionMain.vue";
@@ -83,24 +75,37 @@ import {highlight} from 'prismjs/components/prism-core';
 import {PrismEditor} from "vue-prism-editor";
 
 import 'prismjs/components/prism-json';
+import {useRoute} from "vue-router";
 import {categoryStore} from "@/service/category/CategoryService";
 
-const props = defineProps({
-  categoryId: {
-    type: Number,
-    default: 1,
-  }
+const route = useRoute();
+const categoryId = ref(route.params.id);
+
+onMounted(() => {
+  loadData();
 });
 
-onMounted(async () => {
-  await specStore.fetchApiSpecs(props.categoryId);
-  await categoryStore.fetchCategoryOptions();
-  await routeStore.fetchDynamicRouteOptions();
-});
+const loadData = () => {
+  specStore.fetchApiSpecs(categoryId.value);
+  categoryStore.fetchCategoryById(categoryId.value);
+  routeStore.fetchDynamicRouteOptions();
+}
+
+const onSubmit = async () => {
+  createAPISpec.categoryId = categoryId.value;
+  await createSpec();
+  loadData();
+}
+
 
 const highlighter = (code) => {
   return highlight(code, Prism.languages.json, "json");
 }
+
+watch(() => route.params.id, async (newId) => {
+  categoryId.value = newId;
+  await loadData();
+});
 </script>
 
 <style scoped>

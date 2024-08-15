@@ -75,7 +75,7 @@ const routes = [
     meta: {
       title: 'API 관리'
     },
-    path: '/spec',
+    path: '/spec/:id',
     name: 'spec',
     component: () => import('@/views/spec/SpecView.vue')
   },

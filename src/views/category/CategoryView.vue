@@ -62,10 +62,8 @@ import BaseDivider from "@/components/BaseDivider.vue";
 import FormField from "@/components/FormField.vue";
 import {onMounted} from "vue";
 import TableCategory from "@/components/category/TableCategory.vue";
-import {useCategoryStore} from "@/stores/category/useCategoryStore";
-import {create, createCategory} from "@/service/category/CategoryService"
+import {categoryStore, create, createCategory} from "@/service/category/CategoryService"
 
-const categoryStore = useCategoryStore()
 onMounted(() => {
   categoryStore.fetchCategories()
 })

@@ -13,6 +13,7 @@ import "vue3-toastify/dist/index.css";
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
 import 'prismjs/themes/prism-tomorrow.css';
+import {useMenuStore} from "@/stores/common/useMenuStore";
 
 // keycloak init
 
@@ -52,23 +53,15 @@ const pinia = createPinia()
 
 // Init main store
 const mainStore = useMainStore(pinia)
+const menuStore = useMenuStore(pinia)
 
 // Fetch sample data
 mainStore.fetchSampleClients()
 mainStore.fetchSampleHistory()
 
-// Dark mode
-// Uncomment, if you'd like to restore persisted darkMode setting, or use `prefers-color-scheme: dark`. Make sure to uncomment localStorage block in src/stores/darkMode.js
-// import { useDarkModeStore } from './stores/darkMode'
+// Fetch Menu By Category
+await menuStore.fetchMenus()
 
-// const darkModeStore = useDarkModeStore(pinia)
-
-// if (
-//   (!localStorage['darkMode'] && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
-//   localStorage['darkMode'] === '1'
-// ) {
-//   darkModeStore.set(true)
-// }
 
 // Default title tag
 const defaultDocumentTitle = '중앙 API 프록시 서비스'

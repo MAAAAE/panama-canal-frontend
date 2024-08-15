@@ -1,19 +1,18 @@
 <template>
-  <!-- API 리스트 -->
   <div class="flex justify-between items-center mb-4 mt-4">
-    <h2 class="text-2xl font-bold">11ST</h2>
-    <!--    <p class="text-gray-600">{{ description }}</p>-->
+    <h2 class="text-2xl font-bold">{{ categoryStore.category.name }}</h2>
+    <BaseButton :icon="mdiKey" @click="isSecretModalActive = true"/>
   </div>
   <hr>
   <div class="mt-8">
     <div
         v-for="api in specStore.specs"
-        :key="api.categoryId"
+        :key="api.id"
         :class="['border border-gray-300 rounded-lg mb-4']"
     >
       <div
           class="flex justify-between items-center bg-gray-100 p-4 rounded-t-lg"
-          @click="toggleDetails(api.categoryId)"
+          @click="toggleDetails(api.id)"
       >
         <div class="flex items-center">
               <span
@@ -21,7 +20,7 @@
               >
                 {{ api.method }}
               </span>
-          <span class="ml-2 font-semibold">{{ api.title }}</span>
+          <span class="ml-2 font-semibold">{{ api.name }}</span>
           <span class="ml-4 font-light">{{ api.endpoint }}</span>
         </div>
         <div class="flex space-x-3">
@@ -35,7 +34,7 @@
               label="remove"
               color="danger"
               size="small"
-              @click="deleteAPI(api.categoryId)"
+              @click="deleteAPI(api.id)"
           />
         </div>
       </div>
@@ -46,33 +45,64 @@
               :disabled="true"
           />
         </FormField>
-        <FormField label="Secret">
-          <div class="flex items-center">
-            <FormControl
-                v-model="api.secret"
-                :type="api.showSecret ? 'text' : 'password'"
-                :disabled="true"
-                class="flex-grow"
-            />
-            <BaseButton
-                :label="api.showSecret ? 'Hide' : 'Visible'"
-                size="small"
-                @click="toggleSecret(api.categoryId)"
-                class="ml-2"
-            />
-          </div>
-        </FormField>
-        <FormField label="Headers">
+        <FormField label="Custom Route">
           <FormControl
-              v-model="api.headers"
-              type="textarea"
+              v-model="api.dynamicRouteConfig.predicate"
               :disabled="true"
-              class="w-full"
+          />
+        </FormField>
+        <FormField label="Request Example">
+          <PrismEditor
+              class="my-editor"
+              v-model="api.request"
+              :readonly="true"
+              :highlight="highlighter"
+              line-numbers
+          />
+        </FormField>
+        <FormField label="Response Example">
+          <PrismEditor
+              class="my-editor"
+              v-model="api.response"
+              :readonly="true"
+              :highlight="highlighter"
+              line-numbers
+          />
+        </FormField>
+        <FormField label="Custom Filters">
+          <PrismEditor
+              class="my-editor"
+              :model-value="api.filtersJson"
+              readonly
+              :highlight="highlighter"
+              line-numbers
           />
         </FormField>
       </div>
     </div>
   </div>
+
+  <CardBoxModal
+      v-model="isSecretModalActive"
+      title="Secret"
+      has-cancel
+      :base-button="false"
+  >
+    <div class="flex items-center">
+      <FormControl
+          v-model="categoryStore.category.secretKey"
+          :type="showSecret ? 'text' : 'password'"
+          :disabled="true"
+          class="flex-grow"
+      />
+      <BaseButton
+          :label="showSecret ? 'Hide' : 'Visible'"
+          size="small"
+          @click="toggleSecret"
+          class="ml-2"
+      />
+    </div>
+  </CardBoxModal>
 </template>
 
 <script setup>
@@ -80,6 +110,12 @@ import FormField from "@/components/FormField.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import FormControl from "@/components/FormControl.vue";
 import {specStore} from "@/service/spec/SpecService";
+import {categoryStore} from "@/service/category/CategoryService";
+import {PrismEditor} from "vue-prism-editor";
+import {ref} from "vue";
+import {highlight} from "prismjs/components/prism-core";
+import CardBoxModal from "@/components/CardBoxModal.vue";
+import {mdiKey} from "@mdi/js";
 
 const getMethodColor = (method) => {
   switch (method) {
@@ -96,30 +132,49 @@ const getMethodColor = (method) => {
   }
 };
 
+const isSecretModalActive = ref(false);
+const showSecret = ref(false);
+
 const editAPI = (api) => {
-  console.log('Edit API:', api);
+  // TODO: editAPI
 };
 
 const deleteAPI = (apiId) => {
   // TODO: delete API
-  // console.log('Delete API ID:', apiId);
-  // apiList.value = apiList.value.filter((api) => api.id !== apiId);
 };
 
 const toggleDetails = (apiId) => {
-  const api = specStore.specs.find((api) => api.categoryId === apiId);
+  const api = specStore.specs.find((api) => api.id === apiId);
   if (api) {
     api.showDetails = !api.showDetails;
+    if (api.showDetails) {
+      api.filtersJson = formattedFilters(api.dynamicRouteConfig.filters.map(({id, ...rest}) => rest));
+    }
   }
 };
 
-const toggleSecret = (apiId) => {
-  const api = specStore.specs.find((api) => api.categoryId === apiId);
-  if (api) {
-    api.showSecret = !api.showSecret;
-    api.secret = api.showSecret ? 'your-secret-key' : '********************';
-  }
+const toggleSecret = () => {
+  showSecret.value = !showSecret.value;
 };
+
+const formattedFilters = (filters) => {
+  return JSON.stringify(filters, null, 2);
+};
+
+const highlighter = (code) => {
+  return highlight(code, Prism.languages.json, "json");
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+.my-editor {
+  background-color: #2d2d2d;
+  max-height: 400px;
+  font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 5px 10px;
+  caret-color: aliceblue;
+  color: aliceblue;
+}
+</style>
