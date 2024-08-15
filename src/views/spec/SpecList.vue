@@ -2,7 +2,7 @@
   <!-- API 리스트 -->
   <div class="flex justify-between items-center mb-4 mt-4">
     <h2 class="text-2xl font-bold">11ST</h2>
-<!--    <p class="text-gray-600">{{ description }}</p>-->
+    <!--    <p class="text-gray-600">{{ description }}</p>-->
   </div>
   <hr>
   <div class="mt-8">
@@ -79,31 +79,7 @@
 import FormField from "@/components/FormField.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import FormControl from "@/components/FormControl.vue";
-import { ref } from "vue";
-import {useSpecStore} from "@/stores/spec/userSpecStore";
-
-const specStore = useSpecStore();
-
-const apiList = ref([
-  {
-    method: 'GET',
-    title: '주문 조회',
-    endpoint: '/api/v1/resource',
-    secret: '********************',
-    showSecret: false,
-    headers: 'Authorization: Bearer token',
-    showDetails: false,
-  },
-  {
-    method: 'POST',
-    title: '주문 생성',
-    endpoint: '/api/v1/resource/create',
-    secret: '********************',
-    showSecret: false,
-    headers: 'Content-Type: application/json',
-    showDetails: false,
-  },
-]);
+import {specStore} from "@/service/spec/SpecService";
 
 const getMethodColor = (method) => {
   switch (method) {

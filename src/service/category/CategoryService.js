@@ -17,7 +17,7 @@ const create = () => {
             toast('creating category completed!')
             categoryStore.fetchCategories()
         })
-}
+};
 
 const deleteCategory = ref({})
 

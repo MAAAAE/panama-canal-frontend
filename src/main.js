@@ -10,6 +10,10 @@ import keycloak from "@/keycloak";
 import Vue3Toasity from 'vue3-toastify'
 import "vue3-toastify/dist/index.css";
 
+import { PrismEditor } from 'vue-prism-editor';
+import 'vue-prism-editor/dist/prismeditor.min.css';
+import 'prismjs/themes/prism-tomorrow.css';
+
 // keycloak init
 
 // src/main.js
@@ -20,7 +24,10 @@ keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
     keycloak.loadUserInfo().then((info) => {
       mainStore.setUser({ name: info.preferred_username })
     })
-    createApp(App).use(router).use(pinia)
+    createApp(App)
+        .component('PrismEditor', PrismEditor)
+        .use(router)
+        .use(pinia)
         .use(Vue3Toasity)
         .mount('#app')
   }
