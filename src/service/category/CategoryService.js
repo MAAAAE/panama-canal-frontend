@@ -4,18 +4,30 @@ import apiClient from "@/apiClient";
 import {toast} from "vue3-toastify";
 
 const categoryStore = useCategoryStore()
-const createCategory = reactive({
+// 초기 상태를 저장
+const initialCategoryState = {
     name: '',
     domain: '',
-    secret: '',
+    secretKey: '',
+    secretValue: '',
+    secretType: 'NONE',
     description: ''
-})
+};
+
+// reactive 객체 생성
+const createCategory = reactive({ ...initialCategoryState });
+
+function resetCreateCategory() {
+    // 초기 상태를 복사하여 reactive 객체를 다시 설정
+    Object.assign(createCategory, initialCategoryState);
+}
 
 const create = () => {
     apiClient.post('/api/category', createCategory)
         .then(() => {
             toast('creating category completed!')
             categoryStore.fetchCategories()
+            resetCreateCategory()
         })
 };
 
@@ -26,9 +38,7 @@ const deleteItem = () => {
         .then(res => {
             toast(`${deleteCategory?.value.name} is deleted.`)
             categoryStore.fetchCategories()
-        }).catch(err => {
-        toast(err.message)
-    })
+        })
 }
 
 const updateCategory = ref({})

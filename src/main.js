@@ -22,7 +22,7 @@ keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
     window.location.reload();
   } else {
     keycloak.loadUserInfo().then((info) => {
-      mainStore.setUser({ name: info.preferred_username })
+      mainStore.setUser({ name: info.preferred_username, email: info.email, loginTime:  Intl.DateTimeFormat("ko", { timeStyle: "full" }).format(new Date()) })
     })
     createApp(App)
         .component('PrismEditor', PrismEditor)

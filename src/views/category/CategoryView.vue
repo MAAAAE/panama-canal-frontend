@@ -23,11 +23,16 @@
       </SectionTitleLineWithButton>
 
       <CardBox form @submit.prevent="create">
-        <FormField label="category name & domain" help="특수문자는 입력할 수 없습니다.">
+        <FormField label="category name & domain">
           <FormControl v-model="createCategory.name" type="text" placeholder="ex. OPEN-API" :icon="mdiTag"/>
           <FormControl v-model="createCategory.domain" type="email" :icon="mdiMail" placeholder="ex. openapi.com"/>
         </FormField>
-        <FormField label="description" help="특수문자는 입력할 수 없습니다.">
+        <FormField label="secret" help="api secret key">
+          <FormControl v-model="createCategory.secretKey" type="text" placeholder="secret key.. ex) Authorization" :icon="mdiAccountKey"/>
+          <FormControl v-model="createCategory.secretValue" type="text" placeholder="secret value.. ex)ehJz..." :icon="mdiAccountKey"/>
+          <FormControl v-model="createCategory.secretType" type="select" :icon="mdiMail" :options="['NONE','PARAMETER', 'HEADER']"/>
+        </FormField>
+        <FormField label="description">
           <FormControl v-model="createCategory.description" type="text" placeholder="description.." :icon="mdiNote"/>
         </FormField>
         <template #footer>
@@ -44,7 +49,7 @@
 import {
   mdiMonitorCellphone,
   mdiTag,
-  mdiChartPie, mdiMail, mdiNote
+  mdiChartPie, mdiMail, mdiNote, mdiAccountKey
 } from '@mdi/js'
 import SectionMain from '@/components/SectionMain.vue'
 import NotificationBar from '@/components/NotificationBar.vue'
