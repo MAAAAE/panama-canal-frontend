@@ -6,7 +6,7 @@ import router from './router'
 import { useMainStore } from '@/stores/main.js'
 
 import './css/main.css'
-import keycloak from "@/keycloak";
+import keycloak from "@/keycloak.js";
 import Vue3Toasity from 'vue3-toastify'
 import "vue3-toastify/dist/index.css";
 
