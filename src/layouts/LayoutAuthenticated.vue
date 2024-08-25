@@ -1,43 +1,3 @@
-<script setup>
-import { mdiForwardburger, mdiBackburger, mdiMenu } from '@mdi/js'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import menuAside from '@/menuAside.js'
-import menuNavBar from '@/menuNavBar.js'
-import { useDarkModeStore } from '@/stores/darkMode.js'
-import BaseIcon from '@/components/BaseIcon.vue'
-import FormControl from '@/components/FormControl.vue'
-import NavBar from '@/components/NavBar.vue'
-import NavBarItemPlain from '@/components/NavBarItemPlain.vue'
-import AsideMenu from '@/components/AsideMenu.vue'
-import FooterBar from '@/components/FooterBar.vue'
-import keycloak from "@/keycloak";
-
-const layoutAsidePadding = 'xl:pl-60'
-
-const darkModeStore = useDarkModeStore()
-
-const router = useRouter()
-
-const isAsideMobileExpanded = ref(false)
-const isAsideLgActive = ref(false)
-
-router.beforeEach(() => {
-  isAsideMobileExpanded.value = false
-  isAsideLgActive.value = false
-})
-
-const menuClick = (event, item) => {
-  if (item.isToggleLightDark) {
-    darkModeStore.set()
-  }
-
-  if (item.isLogout) {
-    keycloak.logout()
-  }
-}
-</script>
-
 <template>
   <div
     :class="{
@@ -73,11 +33,59 @@ const menuClick = (event, item) => {
       />
       <slot />
       <FooterBar>
-        Get more with
-        <a href="https://tailwind-vue.justboil.me/" target="_blank" class="text-blue-600"
-          >Premium version</a
-        >
       </FooterBar>
     </div>
   </div>
 </template>
+
+<script setup>
+import { mdiForwardburger, mdiBackburger, mdiMenu } from '@mdi/js'
+import {onMounted, ref} from 'vue'
+import { useRouter } from 'vue-router'
+import menuAside from '@/menuAside.js'
+import menuNavBar from '@/menuNavBar.js'
+import { useDarkModeStore } from '@/stores/common/darkMode.js'
+import BaseIcon from '@/components/BaseIcon.vue'
+import NavBar from '@/components/NavBar.vue'
+import NavBarItemPlain from '@/components/NavBarItemPlain.vue'
+import AsideMenu from '@/components/AsideMenu.vue'
+import FooterBar from '@/components/FooterBar.vue'
+import keycloak from "@/keycloak";
+import {useMenuStore} from "@/stores/common/useMenuStore";
+
+const layoutAsidePadding = 'xl:pl-60'
+
+const darkModeStore = useDarkModeStore()
+
+const router = useRouter()
+
+const menuStore = useMenuStore();
+
+const isAsideMobileExpanded = ref(false)
+const isAsideLgActive = ref(false)
+
+router.beforeEach(() => {
+  isAsideMobileExpanded.value = false
+  isAsideLgActive.value = false
+})
+
+onMounted(async () => {
+  const apiMenu = menuAside.find(item => item.id === 'api');
+  if (!Array.isArray(apiMenu) || !apiMenu.length) {
+    console.log("HELLO");
+    await menuStore.fetchMenus();
+  }
+  apiMenu.menu = menuStore.menus;
+})
+
+const menuClick = (event, item) => {
+  console.log(item);
+  if (item.isToggleLightDark) {
+    darkModeStore.set()
+  }
+
+  if (item.isLogout) {
+    keycloak.logout()
+  }
+}
+</script>

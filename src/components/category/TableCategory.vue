@@ -15,7 +15,7 @@ import {
   deleteItem,
   updateCategory,
   update, create
-} from "@/service/CategoryService"
+} from "@/service/category/CategoryService";
 import PillTag from "@/components/PillTag.vue";
 
 defineProps({

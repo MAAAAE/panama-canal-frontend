@@ -15,7 +15,9 @@
     "keycloak-js": "^25.0.2",
     "numeral": "^2.0.6",
     "pinia": "^2.1.6",
+    "prismjs": "^1.29.0",
     "vue": "^3.3.4",
+    "vue-prism-editor": "^2.0.0-alpha.2",
     "vue-router": "^4.2.4",
     "vue3-toastify": "^0.2.2"
   },

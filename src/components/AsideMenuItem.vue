@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { RouterLink } from 'vue-router'
-import { mdiMinus, mdiPlus } from '@mdi/js'
-import { getButtonColor } from '@/colors.js'
+import {computed, ref} from 'vue'
+import {RouterLink} from 'vue-router'
+import {mdiMinus, mdiPlus} from '@mdi/js'
+import {getButtonColor} from '@/colors.js'
 import BaseIcon from '@/components/BaseIcon.vue'
 import AsideMenuList from '@/components/AsideMenuList.vue'
 
@@ -40,14 +40,25 @@ const menuClick = (event) => {
     isDropdownActive.value = !isDropdownActive.value
   }
 }
+
+const itemLink = computed(() => {
+  const { to, menuType, id } = props.item;
+
+  if(!to) {
+    return null;
+  }
+
+  const isCategoryItemSubMenu = menuType === 'CATEGORY_SUBMENU';
+  return isCategoryItemSubMenu ? `${to}/${id}` : to;
+});
 </script>
 
 <template>
   <li>
     <component
-      :is="item.to ? RouterLink : 'a'"
+      :is="itemLink ? RouterLink : 'a'"
       v-slot="vSlot"
-      :to="item.to ?? null"
+      :to="itemLink ?? null"
       :href="item.href ?? null"
       :target="item.target ?? null"
       class="flex cursor-pointer"

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import keycloak from "@/keycloak";
 import {toast} from "vue3-toastify";
+import {parsePanamaErrorMessage} from "@/utils/error-utils";
 
 const apiClient = axios.create({
     baseURL: 'http://localhost:5173', // API의 기본 URL을 설정합니다.
@@ -31,12 +32,13 @@ apiClient.interceptors.response.use(
     },
     error => {
         // 응답 오류가 발생하면 이를 처리합니다.
+
         handleError(error)
         return Promise.reject(error)
     }
 )
 
-const handleError = (error) => toast(error.response?.data.errorMessage ? error.response.data.errorMessage : error, {
+const handleError = (error) => toast(parsePanamaErrorMessage(error), {
     "theme": "auto",
     "type": "error",
     "transition": "flip",
