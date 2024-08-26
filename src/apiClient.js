@@ -4,7 +4,7 @@ import {toast} from "vue3-toastify";
 import {parsePanamaErrorMessage} from "@/utils/error-utils";
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:5173', // API의 기본 URL을 설정합니다.
+    baseURL: import.meta.env.VITE_API_BASE_URL, // API의 기본 URL을 설정합니다.
     timeout: 10000, // 요청 타임아웃을 설정합니다.
 })
 
