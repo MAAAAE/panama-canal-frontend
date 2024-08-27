@@ -18,7 +18,7 @@ import {useMenuStore} from "@/stores/common/useMenuStore";
 // keycloak init
 
 // src/main.js
-keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
+keycloak.init({onLoad: 'login-required', checkLoginIframe: false}).then((authenticated) => {
   if (!authenticated) {
     window.location.reload();
   } else {
@@ -43,8 +43,8 @@ keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
 
 
 
-}).catch(() => {
-  console.error('Failed to initialize Keycloak');
+}).catch((e) => {
+  console.error('Failed to initialize Keycloak', e);
 });
 // Init Pinia
 const pinia = createPinia()

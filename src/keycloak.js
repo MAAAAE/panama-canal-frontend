@@ -3,7 +3,7 @@ import Keycloak from 'keycloak-js';
 
 // Keycloak configuration options
 const keycloak = new Keycloak({
-    url: import.meta.env.KEYCLOAK_URL,
+    url: 'http://keycloak:18080',
     realm: 'myrealm',
     clientId: 'panama-canal'
 });

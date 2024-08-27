@@ -51,7 +51,7 @@ import NavBarItemPlain from '@/components/NavBarItemPlain.vue'
 import AsideMenu from '@/components/AsideMenu.vue'
 import FooterBar from '@/components/FooterBar.vue'
 import keycloak from "@/keycloak";
-import {useMenuStore} from "@/stores/common/useMenuStore";
+import { useMenuStore } from "@/stores/common/useMenuStore";
 
 const layoutAsidePadding = 'xl:pl-60'
 
