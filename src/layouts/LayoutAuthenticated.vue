@@ -40,7 +40,7 @@
 
 <script setup>
 import { mdiForwardburger, mdiBackburger, mdiMenu } from '@mdi/js'
-import {onMounted, ref} from 'vue'
+import {onBeforeMount, onMounted, ref} from 'vue'
 import { useRouter } from 'vue-router'
 import menuAside from '@/menuAside.js'
 import menuNavBar from '@/menuNavBar.js'
@@ -72,14 +72,12 @@ router.beforeEach(() => {
 onMounted(async () => {
   const apiMenu = menuAside.find(item => item.id === 'api');
   if (!Array.isArray(apiMenu) || !apiMenu.length) {
-    console.log("HELLO");
     await menuStore.fetchMenus();
+    apiMenu.menu = menuStore.menus;
   }
-  apiMenu.menu = menuStore.menus;
 })
 
 const menuClick = (event, item) => {
-  console.log(item);
   if (item.isToggleLightDark) {
     darkModeStore.set()
   }

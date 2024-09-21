@@ -24,12 +24,12 @@ function resetCreateCategory() {
     Object.assign(createCategory, initialCategoryState);
 }
 
-const create = () => {
+const create = async () => {
     apiClient.post('/api/category', createCategory)
-        .then(() => {
+        .then(async () => {
             toast('creating category completed!')
-            categoryStore.fetchCategories();
-            menuStore.fetchMenus();
+            await categoryStore.fetchCategories();
+            await menuStore.fetchMenus();
             resetCreateCategory()
         })
 };
@@ -38,9 +38,9 @@ const deleteCategory = ref({})
 
 const deleteItem = () => {
     apiClient.delete(`/api/category/${deleteCategory.value.id}`)
-        .then(res => {
+        .then(async () => {
             toast(`${deleteCategory?.value.name} is deleted.`)
-            categoryStore.fetchCategories()
+            await categoryStore.fetchCategories()
         })
 }
 
@@ -48,9 +48,9 @@ const updateCategory = ref({})
 
 const update = () => {
     apiClient.put(`/api/category/${updateCategory.value.id}`, updateCategory.value)
-        .then(res => {
+        .then(async () => {
             toast(`${updateCategory?.value.name} is updated.`)
-            categoryStore.fetchCategories()
+            await categoryStore.fetchCategories()
         })
 }
 

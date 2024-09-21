@@ -14,7 +14,7 @@ import {
   deleteCategory,
   deleteItem,
   updateCategory,
-  update, create
+  update
 } from "@/service/category/CategoryService";
 import PillTag from "@/components/PillTag.vue";
 
@@ -93,31 +93,33 @@ const viewDetail = (form) => {
         <FormControl v-model="updateCategory.secretValue" type="text" :icon="mdiKey" placeholder="<key value>"/>
       </FormField>
       <FormField label="secret Type & desc">
-        <FormControl v-model="updateCategory.secretType" type="select" :icon="mdiAccountQuestion" placeholder="type" :options="['NONE','PARAMETER', 'HEADER']"/>
+        <FormControl v-model="updateCategory.secretType" type="select" :icon="mdiAccountQuestion" placeholder="type"
+                     :options="['NONE','PARAMETER', 'HEADER']"/>
         <FormControl v-model="updateCategory.description" type="text" :icon="mdiNote" placeholder="desc"/>
       </FormField>
     </CardBox>
   </CardBoxModal>
 
-  <CardBoxModal v-model="isModalDangerActive" title="Warning" button="danger" has-cancel @confirm="() => { deleteItem() }">
+  <CardBoxModal v-model="isModalDangerActive" title="Warning" button="danger" has-cancel
+                @confirm="() => { deleteItem() }">
     <p>Do you really want to <b>delete this?</b></p>
   </CardBoxModal>
 
   <table>
     <thead>
     <tr>
-      <th v-if="checkable" />
+      <th v-if="checkable"/>
       <th>Name</th>
       <th>Domain</th>
       <th>SecretKey</th>
       <th>SecretValue</th>
       <th>Desc</th>
-      <th />
+      <th/>
     </tr>
     </thead>
     <tbody>
     <tr v-for="client in itemsPaginated" :key="client.id">
-      <TableCheckboxCell v-if="checkable" @checked="checked($event, client)" />
+      <TableCheckboxCell v-if="checkable" @checked="checked($event, client)"/>
       <td data-label="Name">
         {{ client.name }}
       </td>
