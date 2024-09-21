@@ -64,8 +64,8 @@ import {onMounted} from "vue";
 import TableCategory from "@/components/category/TableCategory.vue";
 import {categoryStore, create, createCategory} from "@/service/category/CategoryService"
 
-onMounted(() => {
-  categoryStore.fetchCategories()
-})
+onMounted(async () => {
+  await categoryStore.fetchCategories();
+});
 
 </script>

@@ -7,13 +7,9 @@ export const useCategoryStore = defineStore('category', () => {
     const categoryOptions = ref([]);
     const category = ref({});
 
-    const fetchCategories = () => {
-        apiClient
-            .get(`/api/category/all`)
-            .then((result) => {
-                categories.value = result?.data;
-            });
-
+    const fetchCategories = async () => {
+        const result = await apiClient.get(`/api/category/all`)
+        categories.value = result?.data;
     };
 
     const fetchCategoryById = (id) => {

@@ -13,7 +13,6 @@ import "vue3-toastify/dist/index.css";
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
 import 'prismjs/themes/prism-tomorrow.css';
-import {useMenuStore} from "@/stores/common/useMenuStore";
 
 // keycloak init
 
@@ -53,15 +52,10 @@ const pinia = createPinia()
 
 // Init main store
 const mainStore = useMainStore(pinia)
-const menuStore = useMenuStore(pinia)
 
 // Fetch sample data
 mainStore.fetchSampleClients()
 mainStore.fetchSampleHistory()
-
-// Fetch Menu By Category
-await menuStore.fetchMenus()
-
 
 // Default title tag
 const defaultDocumentTitle = '중앙 API 프록시 서비스'
