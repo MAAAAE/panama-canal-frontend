@@ -1,19 +1,21 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 export const useDarkModeStore = defineStore('darkMode', () => {
-  const isEnabled = ref(false)
+  const isEnabled = ref(false);
 
   function set(payload = null) {
-    isEnabled.value = payload !== null ? payload : !isEnabled.value
+    isEnabled.value = payload !== null ? payload : !isEnabled.value;
 
     if (typeof document !== 'undefined') {
-      document.body.classList[isEnabled.value ? 'add' : 'remove']('dark-scrollbars')
+      document.body.classList[isEnabled.value ? 'add' : 'remove'](
+        'dark-scrollbars'
+      );
 
       document.documentElement.classList[isEnabled.value ? 'add' : 'remove'](
         'dark',
         'dark-scrollbars-compat'
-      )
+      );
     }
 
     // You can persist dark mode setting
@@ -24,6 +26,6 @@ export const useDarkModeStore = defineStore('darkMode', () => {
 
   return {
     isEnabled,
-    set
-  }
-})
+    set,
+  };
+});

@@ -1,29 +1,24 @@
-import {
-  mdiMonitor,
-  mdiGithub,
-  mdiViewList,
-  mdiMenu
-} from '@mdi/js'
+import { mdiGithub, mdiMenu, mdiMonitor, mdiViewList } from '@mdi/js';
 
 export default [
   {
     id: 'dashboard',
     to: '/',
     icon: mdiMonitor,
-    label: 'Dashboard'
+    label: 'Dashboard',
   },
   {
     id: 'category',
     to: '/category',
     label: 'Category 관리',
-    icon: mdiMenu
+    icon: mdiMenu,
   },
   {
     id: 'api',
     label: 'API 관리',
     // to: '/spec',
     icon: mdiViewList,
-    menu: []
+    menu: [],
   },
   {
     id: 'route',
@@ -36,6 +31,6 @@ export default [
     href: 'https://github.com/justboil/admin-one-vue-tailwind',
     label: 'GitHub',
     icon: mdiGithub,
-    target: '_blank'
+    target: '_blank',
   },
-]
+];
