@@ -1,22 +1,19 @@
 <script setup>
-import AsideMenuItem from '@/components/AsideMenuItem.vue'
-import {useMenuStore} from "@/stores/common/useMenuStore";
-
-const menuStore = useMenuStore();
+import AsideMenuItem from '@/components/AsideMenuItem.vue';
 
 defineProps({
   isDropdownList: Boolean,
   menu: {
     type: Array,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const emit = defineEmits(['menu-click'])
+const emit = defineEmits(['menu-click']);
 
 const menuClick = (event, item) => {
-  emit('menu-click', event, item)
-}
+  emit('menu-click', event, item);
+};
 </script>
 
 <template>

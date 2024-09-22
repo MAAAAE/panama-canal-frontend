@@ -1,17 +1,16 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { useMainStore } from '@/stores/main'
-import { mdiCheckDecagram } from '@mdi/js'
-import BaseLevel from '@/components/BaseLevel.vue'
-import UserAvatarCurrentUser from '@/components/UserAvatarCurrentUser.vue'
-import CardBox from '@/components/CardBox.vue'
-import FormCheckRadio from '@/components/FormCheckRadio.vue'
-import PillTag from '@/components/PillTag.vue'
+import { computed, ref } from 'vue';
+import { useMainStore } from '@/stores/main';
+import { mdiCheckDecagram } from '@mdi/js';
+import BaseLevel from '@/components/BaseLevel.vue';
+import UserAvatarCurrentUser from '@/components/UserAvatarCurrentUser.vue';
+import CardBox from '@/components/CardBox.vue';
+import PillTag from '@/components/PillTag.vue';
 
-const mainStore = useMainStore()
+const mainStore = useMainStore();
 
-const userName = computed(() => mainStore.userName)
-const loginTime = computed(() => mainStore.loginTime)
+const userName = computed(() => mainStore.userName);
+const loginTime = computed(() => mainStore.loginTime);
 ref(false);
 </script>
 
@@ -24,7 +23,9 @@ ref(false);
           안녕하세요, <b>{{ userName }}</b
           >!
         </h1>
-        <p>마지막 로그인시간은 <b>{{ loginTime }}</b> 입니다.</p>
+        <p>
+          마지막 로그인시간은 <b>{{ loginTime }}</b> 입니다.
+        </p>
         <div class="flex justify-center md:block">
           <PillTag label="Verified" color="info" :icon="mdiCheckDecagram" />
         </div>
