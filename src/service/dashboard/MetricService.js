@@ -4,8 +4,9 @@ import { toast } from 'vue3-toastify';
 
 // Initial state for the metrics dashboard
 const initialMetricsState = {
-  gatewayRequestsCount: 0,
+  gatewayRoutesCount: 0,
   gatewayStartedTime: 0,
+  health: 'DOWN',
 };
 
 // Reactive object for storing metric data
@@ -17,14 +18,14 @@ function resetMetricsData() {
 }
 
 // Fetch gateway request count
-const fetchGatewayRequestsCount = async () => {
+const fetchGatewayRoutesCount = async () => {
   try {
     const response = await gatewayClient.get(
       '/actuator/metrics/spring.cloud.gateway.routes.count'
     );
-    metricsData.gatewayRequestsCount = response.data.measurements[0].value;
+    metricsData.gatewayRoutesCount = response.data.measurements[0].value;
   } catch (error) {
-    toast.error('Error fetching gateway requests count');
+    toast.error('Error fetching gateway routes count');
     console.error(error);
   }
 };
@@ -37,15 +38,26 @@ const fetchAppStartedTime = async () => {
     );
     metricsData.gatewayStartedTime = response.data.measurements[0].value;
   } catch (error) {
-    toast.error('Error fetching gateway response time');
+    toast.error('Error fetching application started time');
+    console.error(error);
+  }
+};
+
+const fetchHealth = async () => {
+  try {
+    const response = await gatewayClient.get('/actuator/health');
+    metricsData.health = response.data.status;
+  } catch (error) {
+    toast.error('Error fetching gateway health');
     console.error(error);
   }
 };
 
 // Fetch all metrics
 const fetchAllMetrics = async () => {
-  await fetchGatewayRequestsCount();
+  await fetchGatewayRoutesCount();
   await fetchAppStartedTime();
+  await fetchHealth();
   toast.success('Metrics updated successfully');
 };
 
@@ -64,9 +76,10 @@ const fetchGatewayErrorCount = async () => {
 
 export {
   metricsData,
-  fetchGatewayRequestsCount,
+  fetchGatewayRoutesCount,
   fetchAppStartedTime,
   fetchAllMetrics,
   fetchGatewayErrorCount,
   resetMetricsData,
+  fetchHealth,
 };
