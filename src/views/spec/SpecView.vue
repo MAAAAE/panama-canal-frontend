@@ -1,6 +1,11 @@
 <template>
   <LayoutAuthenticated>
     <SectionMain>
+      <SectionTitleLineWithButton :icon="mdiTag" title="API 관리" main>
+      </SectionTitleLineWithButton>
+      <NotificationBar color="info" :icon="mdiMonitorCellphone">
+        <b>나만의 API 문서를 만들어 관리해보세요. </b>
+      </NotificationBar>
       <CardBox is-form @submit.prevent="onSubmit">
         <FormField label="Title">
           <FormControl
@@ -66,7 +71,7 @@
 
 <script setup>
 import { onMounted, ref, watch } from 'vue';
-import { mdiEarth, mdiTag } from '@mdi/js';
+import { mdiEarth, mdiMonitorCellphone, mdiTag } from '@mdi/js';
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue';
 import SectionMain from '@/components/SectionMain.vue';
 import CardBox from '@/components/CardBox.vue';
@@ -86,6 +91,8 @@ import { PrismEditor } from 'vue-prism-editor';
 import 'prismjs/components/prism-json';
 import { useRoute } from 'vue-router';
 import { categoryStore } from '@/service/category/CategoryService';
+import NotificationBar from '@/components/NotificationBar.vue';
+import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
 
 const route = useRoute();
 const categoryId = ref(route.params.id);
