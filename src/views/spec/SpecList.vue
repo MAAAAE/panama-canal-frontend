@@ -6,7 +6,7 @@
   <hr />
   <div class="mt-8">
     <div
-      v-for="api in specStore.specs"
+      v-for="(api, index) in specStore.specs"
       :key="api.id"
       :class="['border border-gray-300 rounded-lg mb-4']"
     >
@@ -27,6 +27,12 @@
           <span class="ml-4 font-light">{{ api.endpoint }}</span>
         </div>
         <div class="flex space-x-3">
+          <BaseButton
+            label="call"
+            color="warning"
+            size="small"
+            @click.stop="fetchAPI(api, index)"
+          />
           <BaseButton
             label="edit"
             color="primary"
@@ -116,6 +122,8 @@ import { ref } from 'vue';
 import { highlight } from 'prismjs/components/prism-core';
 import CardBoxModal from '@/components/CardBoxModal.vue';
 import { mdiKey } from '@mdi/js';
+import axios from 'axios';
+import { toast } from 'vue3-toastify';
 
 const getMethodColor = (method) => {
   switch (method) {
@@ -144,6 +152,43 @@ const deleteAPI = (apiId) => {
   // TODO: delete API
   console.log(apiId);
 };
+const fetchAPI = async (api, index) => {
+  try {
+    let res = await axios({
+      method: api.method, // 기본 값
+      baseURL: '/routes',
+      url: api.dynamicRouteConfig.predicate,
+    });
+    toast('호출 성공. 결과를 확인해보세요.', { autoClose: 1000 });
+
+    const request = requestInfo(res.config);
+    updateSpecWithResponse({
+      api,
+      index,
+      request,
+      responseData: res.data,
+    });
+  } catch (error) {
+    if (error.response) {
+      toast.error('목적지가 에러를 응답했습니다. 응답값을 확인해보세요.', {
+        autoClose: 1000,
+      });
+
+      // 서버가 상태 코드를 반환한 경우
+      console.error('Error Response Data:', error.response.data);
+      console.error('Error Status:', error.response.status);
+      console.error('Error Headers:', error.response.headers);
+
+      const request = requestInfo(error.response.config);
+      updateSpecWithResponse({
+        api,
+        index,
+        request,
+        responseData: error.response.data,
+      });
+    }
+  }
+};
 
 const toggleDetails = (apiId) => {
   const api = specStore.specs.find((api) => api.id === apiId);
@@ -169,6 +214,22 @@ const formattedFilters = (filters) => {
 const highlighter = (code) => {
   // eslint-disable-next-line no-undef
   return highlight(code, Prism.languages.json, 'json');
+};
+
+const requestInfo = (config) => ({
+  url: config.url,
+  method: config.method.toUpperCase(), // 대문자로 표기
+  headers: config.headers,
+  data: config.data,
+  timeout: config.timeout,
+  baseURL: config.baseURL || 'None', // baseURL이 설정되지 않았을 경우 'None'으로 표시
+});
+
+const updateSpecWithResponse = ({ api, index, request, responseData }) => {
+  const copiedSpec = { ...api };
+  copiedSpec.request = formattedFilters(request);
+  copiedSpec.response = formattedFilters(responseData);
+  specStore.updateSpecByIndex(index, copiedSpec);
 };
 </script>
 
