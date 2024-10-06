@@ -23,6 +23,7 @@ import CardBoxClient from '@/components/CardBoxClient.vue';
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue';
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
 import SectionBannerStarOnGitHub from '@/components/SectionBannerStarOnGitHub.vue';
+import TestComponent from '@/components/dashboard/TestComponent.vue';
 
 const chartData = ref(null);
 
@@ -49,6 +50,8 @@ const transactionBarItems = computed(() => mainStore.history);
         title="Overview"
         main
       >
+        <TestComponent></TestComponent>
+
         <BaseButton
           href="https://github.com/justboil/admin-one-vue-tailwind"
           target="_blank"
