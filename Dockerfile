@@ -5,14 +5,14 @@ FROM node:18 AS build
 WORKDIR /app
 
 # Install dependencies
-COPY package.json package-lock.json ./
-RUN npm install
+COPY package.json yarn.lock ./
+RUN yarn install
 
 # Copy the source code
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN yarn build
 
 # Stage 2: Serve the application with Nginx
 FROM nginx:alpine
