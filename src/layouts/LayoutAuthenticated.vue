@@ -1,46 +1,7 @@
-<script setup>
-import { mdiForwardburger, mdiBackburger, mdiMenu } from '@mdi/js'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import menuAside from '@/menuAside.js'
-import menuNavBar from '@/menuNavBar.js'
-import { useDarkModeStore } from '@/stores/darkMode.js'
-import BaseIcon from '@/components/BaseIcon.vue'
-import FormControl from '@/components/FormControl.vue'
-import NavBar from '@/components/NavBar.vue'
-import NavBarItemPlain from '@/components/NavBarItemPlain.vue'
-import AsideMenu from '@/components/AsideMenu.vue'
-import FooterBar from '@/components/FooterBar.vue'
-
-const layoutAsidePadding = 'xl:pl-60'
-
-const darkModeStore = useDarkModeStore()
-
-const router = useRouter()
-
-const isAsideMobileExpanded = ref(false)
-const isAsideLgActive = ref(false)
-
-router.beforeEach(() => {
-  isAsideMobileExpanded.value = false
-  isAsideLgActive.value = false
-})
-
-const menuClick = (event, item) => {
-  if (item.isToggleLightDark) {
-    darkModeStore.set()
-  }
-
-  if (item.isLogout) {
-    //
-  }
-}
-</script>
-
 <template>
   <div
     :class="{
-      'overflow-hidden lg:overflow-visible': isAsideMobileExpanded
+      'overflow-hidden lg:overflow-visible': isAsideMobileExpanded,
     }"
   >
     <div
@@ -49,20 +10,26 @@ const menuClick = (event, item) => {
     >
       <NavBar
         :menu="menuNavBar"
-        :class="[layoutAsidePadding, { 'ml-60 lg:ml-0': isAsideMobileExpanded }]"
+        :class="[
+          layoutAsidePadding,
+          { 'ml-60 lg:ml-0': isAsideMobileExpanded },
+        ]"
         @menu-click="menuClick"
       >
         <NavBarItemPlain
           display="flex lg:hidden"
           @click.prevent="isAsideMobileExpanded = !isAsideMobileExpanded"
         >
-          <BaseIcon :path="isAsideMobileExpanded ? mdiBackburger : mdiForwardburger" size="24" />
+          <BaseIcon
+            :path="isAsideMobileExpanded ? mdiBackburger : mdiForwardburger"
+            size="24"
+          />
         </NavBarItemPlain>
-        <NavBarItemPlain display="hidden lg:flex xl:hidden" @click.prevent="isAsideLgActive = true">
+        <NavBarItemPlain
+          display="hidden lg:flex xl:hidden"
+          @click.prevent="isAsideLgActive = true"
+        >
           <BaseIcon :path="mdiMenu" size="24" />
-        </NavBarItemPlain>
-        <NavBarItemPlain use-margin>
-          <FormControl placeholder="Search (ctrl+k)" ctrl-k-focus transparent borderless />
         </NavBarItemPlain>
       </NavBar>
       <AsideMenu
@@ -73,12 +40,57 @@ const menuClick = (event, item) => {
         @aside-lg-close-click="isAsideLgActive = false"
       />
       <slot />
-      <FooterBar>
-        Get more with
-        <a href="https://tailwind-vue.justboil.me/" target="_blank" class="text-blue-600"
-          >Premium version</a
-        >
-      </FooterBar>
+      <FooterBar> </FooterBar>
     </div>
   </div>
 </template>
+
+<script setup>
+import { mdiBackburger, mdiForwardburger, mdiMenu } from '@mdi/js';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import menuAside from '@/menuAside.js';
+import menuNavBar from '@/menuNavBar.js';
+import { useDarkModeStore } from '@/stores/common/darkMode.js';
+import BaseIcon from '@/components/BaseIcon.vue';
+import NavBar from '@/components/NavBar.vue';
+import NavBarItemPlain from '@/components/NavBarItemPlain.vue';
+import AsideMenu from '@/components/AsideMenu.vue';
+import FooterBar from '@/components/FooterBar.vue';
+import keycloak from '@/keycloak';
+import { useMenuStore } from '@/stores/common/useMenuStore';
+
+const layoutAsidePadding = 'xl:pl-60';
+
+const darkModeStore = useDarkModeStore();
+
+const router = useRouter();
+
+const menuStore = useMenuStore();
+
+const isAsideMobileExpanded = ref(false);
+const isAsideLgActive = ref(false);
+
+router.beforeEach(() => {
+  isAsideMobileExpanded.value = false;
+  isAsideLgActive.value = false;
+});
+
+onMounted(async () => {
+  const apiMenu = menuAside.find((item) => item.id === 'api');
+  if (!Array.isArray(apiMenu) || !apiMenu.length) {
+    await menuStore.fetchMenus();
+    apiMenu.menu = menuStore.menus;
+  }
+});
+
+const menuClick = (event, item) => {
+  if (item.isToggleLightDark) {
+    darkModeStore.set();
+  }
+
+  if (item.isLogout) {
+    keycloak.logout();
+  }
+};
+</script>

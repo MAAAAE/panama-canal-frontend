@@ -1,86 +1,36 @@
-import {
-  mdiAccountCircle,
-  mdiMonitor,
-  mdiGithub,
-  mdiLock,
-  mdiAlertCircle,
-  mdiSquareEditOutline,
-  mdiTable,
-  mdiViewList,
-  mdiTelevisionGuide,
-  mdiResponsive,
-  mdiPalette,
-  mdiReact
-} from '@mdi/js'
+import { mdiGithub, mdiMenu, mdiMonitor, mdiViewList } from '@mdi/js';
 
 export default [
   {
-    to: '/dashboard',
-    icon: mdiMonitor,
-    label: 'Dashboard'
-  },
-  {
-    to: '/tables',
-    label: 'Tables',
-    icon: mdiTable
-  },
-  {
-    to: '/forms',
-    label: 'Forms',
-    icon: mdiSquareEditOutline
-  },
-  {
-    to: '/ui',
-    label: 'UI',
-    icon: mdiTelevisionGuide
-  },
-  {
-    to: '/responsive',
-    label: 'Responsive',
-    icon: mdiResponsive
-  },
-  {
+    id: 'dashboard',
     to: '/',
-    label: 'Styles',
-    icon: mdiPalette
+    icon: mdiMonitor,
+    label: 'Dashboard',
   },
   {
-    to: '/profile',
-    label: 'Profile',
-    icon: mdiAccountCircle
+    id: 'category',
+    to: '/category',
+    label: 'Category 관리',
+    icon: mdiMenu,
   },
   {
-    to: '/login',
-    label: 'Login',
-    icon: mdiLock
-  },
-  {
-    to: '/error',
-    label: 'Error',
-    icon: mdiAlertCircle
-  },
-  {
-    label: 'Dropdown',
+    id: 'api',
+    label: 'API 관리',
+    // to: '/spec',
     icon: mdiViewList,
-    menu: [
-      {
-        label: 'Item One'
-      },
-      {
-        label: 'Item Two'
-      }
-    ]
+    menu: [],
   },
   {
+    id: 'route',
+    label: 'Route 관리',
+    to: '/route',
+    icon: mdiViewList,
+  },
+  {
+    id: 'github',
     href: 'https://github.com/justboil/admin-one-vue-tailwind',
     label: 'GitHub',
     icon: mdiGithub,
-    target: '_blank'
+    target: '_blank',
   },
-  {
-    href: 'https://github.com/justboil/admin-one-react-tailwind',
-    label: 'React version',
-    icon: mdiReact,
-    target: '_blank'
-  }
-]
+];

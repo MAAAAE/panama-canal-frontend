@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "name": "category1",
+      "count": 3
+    },
+    {
+      "name": "category2",
+      "count": 2
+    },
+    {
+      "name": "category3",
+      "count": 4
+    }
+  ]
+}
