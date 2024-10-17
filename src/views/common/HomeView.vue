@@ -46,7 +46,6 @@ computed(() => mainStore.history);
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-6">
         <CardBoxWidget
           color="text-emerald-500"
-          suffix="개"
           :icon="mdiCounter"
           :number="metricsData.gatewayRoutesCount"
           label="Route Config Count"

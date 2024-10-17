@@ -1,10 +1,13 @@
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <SectionTitleLineWithButton :icon="mdiTag" title="API 관리" main>
+      <SectionTitleLineWithButton :icon="mdiTag" title="API Document" main>
       </SectionTitleLineWithButton>
       <NotificationBar color="info" :icon="mdiMonitorCellphone">
-        <b>나만의 API 문서를 만들어 관리해보세요. </b>
+        <b
+          >This menu allows you to create and manage your own API
+          documentation.</b
+        >
       </NotificationBar>
       <CardBox is-form @submit.prevent="onSubmit">
         <FormField label="Title">

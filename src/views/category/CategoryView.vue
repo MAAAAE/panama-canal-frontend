@@ -4,7 +4,7 @@
       <SectionTitleLineWithButton :icon="mdiTag" title="Category" main>
       </SectionTitleLineWithButton>
       <NotificationBar color="info" :icon="mdiMonitorCellphone">
-        <b>API 들의 카테고리를 관리하는 메뉴입니다.</b>
+        <b>This menu allows you to manage categories of APIs.</b>
       </NotificationBar>
 
       <base-divider></base-divider>
