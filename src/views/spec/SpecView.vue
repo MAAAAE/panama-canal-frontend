@@ -49,14 +49,6 @@
             line-numbers
           />
         </FormField>
-        <FormField label="Response Example">
-          <PrismEditor
-            v-model="createAPISpec.response"
-            class="my-editor"
-            :highlight="highlighter"
-            line-numbers
-          />
-        </FormField>
         <template #footer>
           <div class="flex justify-end">
             <BaseButton label="Create" type="submit" color="info" />
