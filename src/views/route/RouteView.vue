@@ -7,7 +7,7 @@
         main
       ></SectionTitleLineWithButton>
       <NotificationBar color="info" :icon="mdiMonitorCellphone">
-        <b>Custom Route를 관리하는 메뉴입니다.</b>
+        <b>This menu allows you to manage custom routes.</b>
       </NotificationBar>
 
       <SectionTitleLineWithButton title="Create"></SectionTitleLineWithButton>

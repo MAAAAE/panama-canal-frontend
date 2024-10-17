@@ -34,16 +34,10 @@
             @click.stop="fetchAPI(api, index)"
           />
           <BaseButton
-            label="edit"
-            color="primary"
-            size="small"
-            @click="editAPI(api)"
-          />
-          <BaseButton
             label="remove"
             color="danger"
             size="small"
-            @click="deleteAPI(api.id)"
+            @click.stop="openDeleteModal(api.id)"
           />
         </div>
       </div>
@@ -109,13 +103,27 @@
       />
     </div>
   </CardBoxModal>
+
+  <CardBoxModal
+    v-model="isModalDangerActive"
+    title="Warning"
+    button="danger"
+    has-cancel
+    @confirm="
+      () => {
+        deleteAPI();
+      }
+    "
+  >
+    <p>Do you really want to <b>delete this?</b></p>
+  </CardBoxModal>
 </template>
 
 <script setup>
 import FormField from '@/components/FormField.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import FormControl from '@/components/FormControl.vue';
-import { specStore } from '@/service/spec/SpecService';
+import { deleteSpec, specStore } from '@/service/spec/SpecService';
 import { categoryStore } from '@/service/category/CategoryService';
 import { PrismEditor } from 'vue-prism-editor';
 import { ref } from 'vue';
@@ -142,16 +150,25 @@ const getMethodColor = (method) => {
 
 const isSecretModalActive = ref(false);
 const showSecret = ref(false);
+const isModalDangerActive = ref(false);
+const deleteTarget = ref(null);
 
-const editAPI = (api) => {
-  console.log(api);
-  // TODO: editAPI
+const emit = defineEmits(['reload']);
+
+const openDeleteModal = (apiId) => {
+  isModalDangerActive.value = true;
+  deleteTarget.value = apiId;
 };
 
-const deleteAPI = (apiId) => {
-  // TODO: delete API
-  console.log(apiId);
+const deleteAPI = async () => {
+  if (!deleteTarget.value) {
+    toast.error('Something Went Wrong! No Target Id.');
+    return;
+  }
+  await deleteSpec(deleteTarget.value);
+  emit('reload');
 };
+
 const fetchAPI = async (api, index) => {
   try {
     let res = await axios({
@@ -159,7 +176,7 @@ const fetchAPI = async (api, index) => {
       baseURL: '/routes',
       url: api.dynamicRouteConfig.predicate,
     });
-    toast('호출 성공. 결과를 확인해보세요.', { autoClose: 1000 });
+    toast('Call successful. Please check the result.', { autoClose: 1000 });
 
     const request = requestInfo(res.config);
     updateSpecWithResponse({
@@ -170,9 +187,12 @@ const fetchAPI = async (api, index) => {
     });
   } catch (error) {
     if (error.response) {
-      toast.error('목적지가 에러를 응답했습니다. 응답값을 확인해보세요.', {
-        autoClose: 1000,
-      });
+      toast.error(
+        'The destination responded with an error. Please check the response value.',
+        {
+          autoClose: 1000,
+        }
+      );
 
       // 서버가 상태 코드를 반환한 경우
       console.error('Error Response Data:', error.response.data);

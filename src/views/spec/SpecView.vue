@@ -1,10 +1,13 @@
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <SectionTitleLineWithButton :icon="mdiTag" title="API 관리" main>
+      <SectionTitleLineWithButton :icon="mdiTag" title="API Document" main>
       </SectionTitleLineWithButton>
       <NotificationBar color="info" :icon="mdiMonitorCellphone">
-        <b>나만의 API 문서를 만들어 관리해보세요. </b>
+        <b
+          >This menu allows you to create and manage your own API
+          documentation.</b
+        >
       </NotificationBar>
       <CardBox is-form @submit.prevent="onSubmit">
         <FormField label="Title">
@@ -49,14 +52,6 @@
             line-numbers
           />
         </FormField>
-        <FormField label="Response Example">
-          <PrismEditor
-            v-model="createAPISpec.response"
-            class="my-editor"
-            :highlight="highlighter"
-            line-numbers
-          />
-        </FormField>
         <template #footer>
           <div class="flex justify-end">
             <BaseButton label="Create" type="submit" color="info" />
@@ -64,7 +59,7 @@
         </template>
       </CardBox>
 
-      <SpecList></SpecList>
+      <SpecList @reload="loadData"></SpecList>
     </SectionMain>
   </LayoutAuthenticated>
 </template>
