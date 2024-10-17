@@ -176,7 +176,7 @@ const fetchAPI = async (api, index) => {
       baseURL: '/routes',
       url: api.dynamicRouteConfig.predicate,
     });
-    toast('호출 성공. 결과를 확인해보세요.', { autoClose: 1000 });
+    toast('Call successful. Please check the result.', { autoClose: 1000 });
 
     const request = requestInfo(res.config);
     updateSpecWithResponse({
@@ -187,9 +187,12 @@ const fetchAPI = async (api, index) => {
     });
   } catch (error) {
     if (error.response) {
-      toast.error('목적지가 에러를 응답했습니다. 응답값을 확인해보세요.', {
-        autoClose: 1000,
-      });
+      toast.error(
+        'The destination responded with an error. Please check the response value.',
+        {
+          autoClose: 1000,
+        }
+      );
 
       // 서버가 상태 코드를 반환한 경우
       console.error('Error Response Data:', error.response.data);
