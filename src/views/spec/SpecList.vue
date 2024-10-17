@@ -37,7 +37,7 @@
             label="remove"
             color="danger"
             size="small"
-            @click.stop="deleteAPI(api.id)"
+            @click.stop="openDeleteModal(api.id)"
           />
         </div>
       </div>
@@ -103,13 +103,27 @@
       />
     </div>
   </CardBoxModal>
+
+  <CardBoxModal
+    v-model="isModalDangerActive"
+    title="Warning"
+    button="danger"
+    has-cancel
+    @confirm="
+      () => {
+        deleteAPI();
+      }
+    "
+  >
+    <p>Do you really want to <b>delete this?</b></p>
+  </CardBoxModal>
 </template>
 
 <script setup>
 import FormField from '@/components/FormField.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import FormControl from '@/components/FormControl.vue';
-import { specStore } from '@/service/spec/SpecService';
+import { deleteSpec, specStore } from '@/service/spec/SpecService';
 import { categoryStore } from '@/service/category/CategoryService';
 import { PrismEditor } from 'vue-prism-editor';
 import { ref } from 'vue';
@@ -136,11 +150,25 @@ const getMethodColor = (method) => {
 
 const isSecretModalActive = ref(false);
 const showSecret = ref(false);
+const isModalDangerActive = ref(false);
+const deleteTarget = ref(null);
 
-const deleteAPI = (apiId) => {
-  // TODO: delete API
-  console.log(apiId);
+const emit = defineEmits(['reload']);
+
+const openDeleteModal = (apiId) => {
+  isModalDangerActive.value = true;
+  deleteTarget.value = apiId;
 };
+
+const deleteAPI = async () => {
+  if (!deleteTarget.value) {
+    toast.error('Something Went Wrong! No Target Id.');
+    return;
+  }
+  await deleteSpec(deleteTarget.value);
+  emit('reload');
+};
+
 const fetchAPI = async (api, index) => {
   try {
     let res = await axios({

@@ -21,6 +21,11 @@ const createSpec = async () => {
   resetCreateApiSpec();
 };
 
+const deleteSpec = async (id) => {
+  await apiClient.delete(`/api/specs/${id}`);
+  toast('API Spec Deleted!');
+};
+
 const resetCreateApiSpec = () => {
   createAPISpec.endpoint = '';
   createAPISpec.name = '';
@@ -31,4 +36,4 @@ const resetCreateApiSpec = () => {
   createAPISpec.categoryId = '';
 };
 
-export { createSpec, specStore, createAPISpec };
+export { createSpec, specStore, createAPISpec, deleteSpec };

@@ -56,7 +56,7 @@
         </template>
       </CardBox>
 
-      <SpecList></SpecList>
+      <SpecList @reload="loadData"></SpecList>
     </SectionMain>
   </LayoutAuthenticated>
 </template>
