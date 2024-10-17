@@ -34,16 +34,10 @@
             @click.stop="fetchAPI(api, index)"
           />
           <BaseButton
-            label="edit"
-            color="primary"
-            size="small"
-            @click="editAPI(api)"
-          />
-          <BaseButton
             label="remove"
             color="danger"
             size="small"
-            @click="deleteAPI(api.id)"
+            @click.stop="deleteAPI(api.id)"
           />
         </div>
       </div>
@@ -142,11 +136,6 @@ const getMethodColor = (method) => {
 
 const isSecretModalActive = ref(false);
 const showSecret = ref(false);
-
-const editAPI = (api) => {
-  console.log(api);
-  // TODO: editAPI
-};
 
 const deleteAPI = (apiId) => {
   // TODO: delete API
