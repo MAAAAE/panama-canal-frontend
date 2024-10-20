@@ -25,7 +25,7 @@
               color="info"
               :icon="mdiEye"
               small
-              @click="editRoute(route)"
+              @click="openEditRouteModal(route)"
             />
             <BaseButton
               color="danger"
@@ -72,8 +72,9 @@
     title="Edit Route"
     has-cancel
     @confirm="editRoute"
+    @cancel="editCancel"
   >
-    <RouteForm></RouteForm>
+    <RouteEditForm></RouteEditForm>
   </CardBoxModal>
 </template>
 
@@ -83,9 +84,17 @@ import { mdiEye, mdiTrashCan } from '@mdi/js';
 import BaseLevel from '@/components/BaseLevel.vue';
 import BaseButtons from '@/components/BaseButtons.vue';
 import BaseButton from '@/components/BaseButton.vue';
-import { deleteDynamicRoute, routeStore } from '@/service/route/RouteService';
+import {
+  deleteDynamicRoute,
+  editDynamicRoute,
+  editRouteAndFilters,
+  resetEditDynamicRoute,
+  routeStore,
+} from '@/service/route/RouteService';
 import CardBoxModal from '@/components/CardBoxModal.vue';
-import RouteForm from '@/views/route/RouteForm.vue';
+import RouteEditForm from '@/views/route/RouteEditForm.vue';
+import { toast } from 'vue3-toastify';
+import _ from 'lodash';
 
 const items = computed(() => routeStore.routes);
 
@@ -94,14 +103,6 @@ const isDeleteModalActive = ref(false);
 const perPage = ref(5);
 const currentPage = ref(0);
 const selectedRouteId = ref(null);
-
-const localRoute = ref({
-  id: null,
-  uri: '',
-  predicate: '',
-  filters: [],
-  routeOrder: 1,
-});
 
 const itemsPaginated = computed(() =>
   items.value.slice(
@@ -122,10 +123,22 @@ const pagesList = computed(() => {
   return pagesList;
 });
 
-const editRoute = (route) => {
-  // TODO: Filter 수정 어떻게 해야할지 필요.
-  localRoute.value = { ...route };
+const openEditRouteModal = (route) => {
+  Object.assign(editDynamicRoute, _.cloneDeep(route));
   isEditModalActive.value = true;
+};
+
+const editRoute = async () => {
+  if (!editDynamicRoute.id || editDynamicRoute.id < 0) {
+    toast.error('Edit Route ID has been reset. Please try again');
+    return;
+  }
+  await editRouteAndFilters(editDynamicRoute.id);
+};
+
+const editCancel = () => {
+  resetEditDynamicRoute();
+  isEditModalActive.value = false;
 };
 
 const confirmDelete = (routeId) => {
@@ -134,7 +147,7 @@ const confirmDelete = (routeId) => {
 };
 
 const deleteRoute = async () => {
-  deleteDynamicRoute(selectedRouteId.value);
+  await deleteDynamicRoute(selectedRouteId.value);
 };
 
 const formattedFilters = (filters) => {
