@@ -13,6 +13,14 @@ const dynamicRoute = reactive({
   routeOrder: 1,
 });
 
+const editDynamicRoute = reactive({
+  uri: '',
+  predicate: '',
+  filters: [],
+  routeOrder: 1,
+  deletedFilters: [],
+});
+
 const createDynamicRoute = () => {
   apiClient.post('/api/dynamic-route', dynamicRoute).then(() => {
     toast('dynamic route created!');
@@ -28,6 +36,14 @@ const deleteDynamicRoute = (id) => {
   });
 };
 
+const editRouteAndFilters = (id) => {
+  apiClient.put(`/api/dynamic-route/${id}`, editDynamicRoute).then(() => {
+    toast('dynamic route edited!');
+    routeStore.fetchDynamicRoutes();
+    resetEditDynamicRoute();
+  });
+};
+
 const resetDynamicRoute = () => {
   dynamicRoute.uri = '';
   dynamicRoute.predicate = '';
@@ -37,4 +53,21 @@ const resetDynamicRoute = () => {
   dynamicRoute.routeOrder = 1;
 };
 
-export { routeStore, dynamicRoute, createDynamicRoute, deleteDynamicRoute };
+const resetEditDynamicRoute = () => {
+  editDynamicRoute.routeOrder = 1;
+  editDynamicRoute.uri = '';
+  editDynamicRoute.predicate = '';
+  editDynamicRoute.filters = [];
+  editDynamicRoute.deletedFilters = [];
+  editDynamicRoute.insertedFilters = [];
+};
+
+export {
+  routeStore,
+  dynamicRoute,
+  createDynamicRoute,
+  deleteDynamicRoute,
+  editDynamicRoute,
+  resetEditDynamicRoute,
+  editRouteAndFilters,
+};
