@@ -17,6 +17,12 @@ RUN yarn build
 # Stage 2: Serve the application with Nginx
 FROM nginx:alpine
 
+
+# Wait for services
+COPY wait-for-services.sh /wait-for-services.sh
+RUN chmod +x /wait-for-services.sh
+########
+
 # Copy the built application from the build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
@@ -24,4 +30,4 @@ COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 
 # Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/wait-for-services.sh"]
